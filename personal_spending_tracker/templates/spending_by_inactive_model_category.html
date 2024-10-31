@@ -1,0 +1,34 @@
+{% extends 'partials/main_layout_template.html' %}
+{% block optionalscript %}
+{% endblock %}
+
+{% block header %}
+  <h1> Model Category's cycles </h1>
+{% endblock %}
+
+{% block content %}
+    {% if error_present %}
+        <p class="error"> {{ error }}</p>
+    {% endif %}
+
+    <table class="table table-hover">
+        <th> Time period </th>
+        <th> Action </th>
+        {% if no_of_cycles == 0 %}
+          <tr>
+            <td>No cycles yet</td>
+            <td></td>
+          </tr>
+        {% else %}
+          {% for timeframe_string, cycle_id in cycles_timeframes_ids %}
+          <tr>
+            <td>{{timeframe_string}}</td>
+            <td>
+              <p><a href='{% url 'spending_by_category_concrete_category' categoryfilter=category_name timefilter="All" cyclefilter=cycle_id %}'><button class="btn btn-outline-primary" type="button"> Go </button></a></p>
+            </td>
+          </tr>
+          {% endfor %}
+        {% endif %}
+      </table>
+
+{% endblock %}

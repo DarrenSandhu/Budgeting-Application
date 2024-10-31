@@ -1,0 +1,64 @@
+{% extends 'partials/main_layout_template.html' %}
+{% block optionalscript %}
+{% endblock %}
+
+{% block header %}
+  <h1>Spending by category</h1>
+{% endblock %}
+
+{% block content %}
+
+{% if error_present %}
+
+    <p class="error"> {{ error }}</p>
+
+{% endif %}
+
+<h4> Active categories </h4>
+<table class="table table-hover">
+  <th> Category </th>
+  <th> Action </th>
+  {% if no_of_active_categories == 0 %}
+    <tr>
+      <td>No active categories</td>
+      <td></td>
+    </tr>
+  {% else %}
+    {% for category_name in active_category_filters %}
+    <tr>
+      <td>{{category_name}}</td>
+      <td>
+        {% if cyclefilter %}
+          <p><a href='{% url 'spending_by_category_concrete_category' categoryfilter=category_name timefilter="All" cyclefilter=cyclefilter %}'><button class="btn btn-outline-primary" type="button"> Go </button></a></p>
+        {% else %}
+          <p><a href='{% url 'spending_by_category_concrete_category' categoryfilter=category_name timefilter="All" cyclefilter="Current" %}'><button class="btn btn-outline-primary" type="button"> Go </button></a></p>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  {% endif %}
+</table>
+
+</br>
+
+<h4> Inactive categories </h4>
+<table class="table table-hover">
+  <th> Category </th>
+  <th> Action </th>
+  {% if no_of_inactive_categories == 0 %}
+  <tr>
+    <td>No inactive categories</td>
+    <td></td>
+  </tr>
+  {% else %}
+    {% for category_name in inactive_category_filters %}
+    <tr>
+      <td>{{category_name}}</td>
+      <td>
+          <p><a href='{% url 'spending_by_inactive_model_category' categoryfilter=category_name %}'><button class="btn btn-outline-primary" type="button"> Go </button></a></p>
+      </td>
+    </tr>
+    {% endfor %}
+  {% endif %}
+</table>
+{% endblock %}

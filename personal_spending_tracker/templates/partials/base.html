@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'checkbox.css' %}"/>
+  <link rel="stylesheet" type="text/css" href="{% static 'span_notify.css' %}"/>
+  {% load django_bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_messages %}
+  <title>Budgeting app - Team Bravo</title>
+  <!--Scripts below are required for the dropdown menu-->
+  {% block optionalscript %}
+  {% endblock %}
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <!--Scripts below are required for the dropdown menu-->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+  crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.10.2/umd/popper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+  <!--Using values from the chosen template category to fill the fields-->
+<script>
+  // Get the dropdown button and menu elements
+const dropdownButton = document.querySelector('#templateDropdown');
+const dropdownMenu = document.querySelector('#templateDropdown-menu');
+
+// Add a click event listener to the dropdown button
+if(dropdownButton & dropdownMenu){
+  dropdownButton.addEventListener('click', function() {
+    // Show the dropdown menu when the button is clicked
+    dropdownMenu.classList.toggle('show');
+  });
+}
+
+// Add a click event listener to the dropdown menu items
+if(dropdownMenu){
+  const dropdownItems = dropdownMenu.querySelectorAll('#templateDropdown-item');
+  dropdownItems.forEach(function(item) {
+    item.addEventListener('click', function() {
+      // Get the selected category ID, name, and limit from the data attributes
+      const categoryId = item.getAttribute('data-id');
+      const categoryName = item.getAttribute('data-name');
+      const categoryLimit = item.getAttribute('data-limit');
+
+      // Do something with the selected category ID, name, and limit
+      console.log(`Selected category: ${categoryName} (${categoryId})`);
+      console.log(`Category limit: ${categoryLimit}`);
+
+      // Populate the limit field in the row above the dropdown
+      const limitField = document.querySelector('#id_limit');
+      limitField.value = categoryLimit;
+
+      // Populate the name field in the row above the dropdown
+      const nameField = document.querySelector('#id_name');
+      nameField.value = categoryName;
+
+      // Hide the dropdown menu
+      dropdownMenu.classList.remove('show');
+    });
+  });
+}
+
+// Hide the dropdown menu when the user clicks outside of it
+if(dropdownButton & dropdownMenu){
+  document.addEventListener('click', function(event) {
+    if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+      dropdownMenu.classList.remove('show');
+    }
+  });
+}
+</script>
+
+<script>
+  // Get the button and dropdown elements
+  const filterBtn = document.querySelector("#filter-btn");
+  const dropdownTimeMenu = document.querySelector("#dm");
+
+  // Attach a click event listener to the dropdown menu
+  if(dropdownTimeMenu){
+    dropdownTimeMenu.addEventListener("click", (event) => {
+        // Check if a dropdown item was clicked
+        if (event.target.classList.contains("dropdown-item")) {
+            // Get the selected option's text content
+            const selectedOption = event.target.textContent.trim();
+
+            // Update the button text with the selected option
+            filterBtn.textContent = selectedOption;
+        }
+    });
+  }
+</script>
+</head>
+<body>
+  {% block body %}
+  {% endblock %}
+</body>
+</html>

@@ -1,0 +1,23 @@
+{% extends 'partials/main_layout_template.html' %}
+
+{% block nav_bar%}{% endblock %}
+{% block top_bar%}{% endblock %}
+
+{% block content %}
+<div class="form-group"> 
+<h1>Log in</h1>
+  <p> &nbsp; </p>
+  {% for messages in messages %}
+    <p><b>{{ messages }}</b></p>
+  {% endfor %}
+  <form action="{% url 'log_in' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Log in">
+  </form>
+  <p> &nbsp; </p>
+  <form action="{% url 'home' %}">
+    <input type="submit" value="Home" />
+  </form>
+</div>
+{% endblock %}

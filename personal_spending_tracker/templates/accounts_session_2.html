@@ -1,0 +1,112 @@
+{% extends 'partials/main_layout_template.html' %}
+{% block optionalscript %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script> 
+    $(document).ready(function() {
+        $('#add-form-btn').click(function() {
+            // get the ID of the table from the button
+            var tableId = $(this).data('table-id');
+
+            // get the last row of the table
+            var lastRow = $('#' + tableId + ' tr:last');
+
+            // clone the last row and clear its input fields
+            var newRow = lastRow.clone();
+            newRow.find('input[type=text]').val('');
+
+            // append the new row to the table
+            lastRow.after(newRow);
+        });
+    });
+
+    $(document).ready(function() {
+        // when the "Add Formset" button is clicked
+        $('#add-model-category-btn').click(function() {
+            // show the hidden formset
+            $('#hidden-form').show();
+
+            // get the last row of the hidden formset table
+            //var lastRow = $('#hidden-form-table tr:last');
+
+            // clone the last row and clear its input fields
+            //var newRow = lastRow.clone();
+            //newRow.find('input[type=text]').val('');
+
+            // append the new row to the hidden formset table
+            //lastRow.after(newRow);
+        });
+    });
+</script>
+{% endblock %}
+
+{% block header %}
+<h1>Set your Budget and Goals for the Coming Cycle</h1>
+{% endblock %}
+
+{% block content %}
+
+{% if error %}
+
+    <p class="error"> {{ error }}</p>
+
+{% endif %}
+</br>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <center>
+    <div id="hidden-form" style="display: none;">
+        <p> {{form2.current_name}} </p>
+        <p><input type="submit" name="add_new_MCC_form-submit" value="Add Model Category" class="btn btn-outline-primary"> </p>
+    </div>
+    </center>
+</form>
+
+</br>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <table id="my-formset-table" class="table table-hover">
+        <tr>
+            <th> Category </th>
+            <th> Spending limit </th>
+            <th> Goal: Spend as little as possible </th>
+            <th> Goal: Well-distributed spending </th>
+            <th> Goal: Reduce spending by X% </th>
+            <th> Delete 
+            </th>
+        </tr>
+        {% for form in formset %}
+        <tr>
+            <td> {{form.model_concrete_category}}</td>
+            <td> {{form.limit}}</td>
+            <td> {{form.goal_as_little_as_possible}}</td>
+            <td> {{form.goal_well_distributed}}</td>
+            <td> {{form.goal_x_less}}</td>
+            <td> {{form.DELETE}}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    </br>
+
+    <center>
+        <input type="submit" name="accounts_session_formset-submit" value="Confirm budget" class="btn btn-outline-primary">
+    </center>
+</form>
+
+</br>
+<center>
+<button id="add-form-btn" data-table-id="my-formset-table" class="btn btn-outline-primary">Add a Concrete Category Form</button>
+</center>
+
+</br>
+
+<center>
+    <input id="add-model-category-btn" type="submit" name="add_category" value="+ Add a Model Concrete Category" class="btn btn-outline-primary">
+</center>
+
+</br>
+</br>
+{% endblock %}

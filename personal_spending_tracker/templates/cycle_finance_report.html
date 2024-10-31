@@ -1,0 +1,164 @@
+{% extends 'partials/main_layout_template.html' %}
+{% block optionalscript %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.0"></script>
+  <script>
+      $(document).ready(function(){
+      $("#myModal").modal('show');
+      });
+  </script>
+
+  <script src="../static/parse_chart_data.js"></script>
+
+  <script type="module">
+    /* colours definition */
+      /* spending data */
+      const BACKGROUND_COLOURS = [
+        'rgba(255, 99, 132, 0.5)',
+        'rgba(255, 159, 64, 0.5)',
+        'rgba(255, 205, 86, 0.5)',
+        'rgba(75, 192, 192, 0.5)',
+        'rgba(54, 162, 235, 0.5)',
+        'rgba(153, 102, 255, 0.5)',
+        'rgba(201, 203, 207, 0.5)'
+      ];
+
+      const BORDER_COLOURS = [
+        'rgb(255, 99, 132)',
+        'rgb(255, 159, 64)',
+        'rgb(255, 205, 86)',
+        'rgb(75, 192, 192)',
+        'rgb(54, 162, 235)',
+        'rgb(153, 102, 255)',
+        'rgb(201, 203, 207)'
+      ];
+
+
+      /* budget data */
+      const BUDGET_BACKGROUND_COLOUR = "lightgrey";
+      const BUDGET_BORDER_COLOUR = "grey";
+
+    /* CYCLE REPORT */
+      /* parsing string passed in to json */ 
+      const past_cycle_report_data = parse_chart_data('{{json_data}}')
+  
+      /* extracting datasets for each series of data */
+      const labels = Object.keys(past_cycle_report_data);
+      const budgetData = Object.values(past_cycle_report_data).map((item) => item.budget);
+      const spendingData = Object.values(past_cycle_report_data).map((item) => item.spending);
+
+      const new_labels = []
+      for(let i = 0; i < labels.length; i++){
+        new_labels[i] = ['£' + spendingData[i] + "/" + budgetData[i] + ' spent', labels[i]];
+      }
+ 
+      /* monthly report configuartion */
+      const config = {
+        data: {
+          labels: new_labels,
+          datasets: [
+            {
+              data: spendingData,
+              borderWidth: 1,
+              borderRadius: 5,
+              backgroundColor: BACKGROUND_COLOURS,
+              borderColor: BORDER_COLOURS,
+              type: 'bar', 
+              barPercentage: 0.40, 
+              grouped: false,
+            },
+            {
+              data: budgetData,
+              borderColor: BORDER_COLOURS,
+              borderWidth: 0.5,
+              borderRadius: 5,
+              backgroundColor: BUDGET_BACKGROUND_COLOUR,
+              type: 'bar', 
+              barPercentage: 0.50, 
+              grouped: false,
+            }
+          ]
+        },
+        options: {
+          plugins: {
+            legend: {
+              display: false,
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: '£',
+                align: 'end',
+              },
+            },
+            x: {
+              ticks: {
+                color: BORDER_COLOURS,
+              }
+            }
+          }
+        },
+      };
+
+      const config_pie = {
+        type: 'doughnut',
+        data: {
+          labels: labels, 
+          datasets: [{
+            data: spendingData,
+            backgroundColor: BACKGROUND_COLOURS,
+            borderColor: BORDER_COLOURS,
+          }] 
+        },
+        options: {
+          legend: {
+            position: 'bottom' 
+          }
+        }
+      };
+
+      window.onload = function() {
+        var ctx = document.getElementById('chart_report').getContext('2d');
+        window.myPie = new Chart(ctx, config);
+        var ctx_pie = document.getElementById('pie_report').getContext('2d');
+        window.myPie = new Chart(ctx_pie, config_pie);
+      }; 
+  </script>
+{% endblock %}
+
+{% block header %}
+  <h1>Previous Cycle Finance Report</h1>
+{% endblock %}
+
+{% block content %}
+
+<h5 style="text-align: center; font-family: 'Poppins';">Monthly finance report for {{timeframe_string_report}}</h5>
+<div class="container">
+  <div class="row">
+    <h6 style="text-align: center; font-family: 'Poppins';"> Your spending for each category relative to your budget set the past cycle</h6>
+    <canvas id="chart_report"></canvas>
+  </div>
+</br>
+  <div class="row align-items-center">
+    <div class="col"> 
+      <h4 class="align-middle" style="text-align: center; font-family: 'Poppins';"> Total spending: </h4>
+      <h4 class="align-middle" style="text-align: center; font-family: 'Poppins';"> {{total_spending}} £</h4>
+    </div>
+    <div class="col">
+      <h6 style="text-align: center; font-family: 'Poppins';"> Your spending split between categories</h6>
+      <canvas id="pie_report"></canvas>
+    </div>
+  </div>
+</div>
+
+
+
+</br>
+<!-- Button redirecting to next accounts session page (accounts_session_3_points_summary) -->
+<center>
+  <a href="{% url 'accounts_session_3_points_summary' %}" class="btn btn-outline-primary">Next</a>
+</center>
+
+{% endblock %}

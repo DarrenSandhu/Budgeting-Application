@@ -1,0 +1,22 @@
+<div class="container"> 
+    <div class="row justify-content-between">
+        <div class="col-4">   
+        </div>
+        <div class="col-4">
+            {% if request.user.is_authenticated %}
+            <div class="dropdown show">
+                <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <!---#TODO: change "private spending" to account type getting printed out-->
+                    <i class="bi bi-person-circle"></i> <h7>  {{request.user}} - private spending </h7>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href='{% url 'edit_profile' %}'>Edit Profile</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item"  href='{% url 'log_out' %}'>Log Out</a>
+                </div>
+            </div>
+            {% else %}
+            {% endif %}
+        </div>
+    </div>
+</div>

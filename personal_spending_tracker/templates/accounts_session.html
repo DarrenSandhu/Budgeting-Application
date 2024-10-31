@@ -1,0 +1,119 @@
+{% extends 'partials/main_layout_template.html' %}
+
+{% block header %}
+<h1>Set your Budget and Goals for the Coming Cycle</h1>
+{% endblock %}
+
+{% block content %}
+
+{% if error_present %}
+
+    <p class="error"> {{ error }}</p>
+
+{% endif %}
+</br>
+<form action="" method="POST">
+    {% csrf_token %}
+    <table class="table table-hover">
+        <tr>
+            <th> Category </th>
+            <th> </th>
+            <th> Spending limit </th>
+            <th> </th>
+            <th> Goal: Spend as little as possible </th>
+            <th> </th>
+            <th> Goal: Well-distributed spending </th>
+            <th> </th>
+            <th> Goal: Reduce spending by X% </th>
+            <th> </th>
+            <th> Actions </th>
+        </tr>
+
+        
+        {% for category in categories %}
+            <tr class="justify-content-between">
+                    {% if edit_cat == True and category.name == category_p %}
+                    <td style="width: 35%"><input class="form-control" style="width: auto; display: inline !important" type="text" value="{{category.name}}" name="category_name"></td>
+                    <td style="width: 10%"><button type="submit" name="rename_ok" value="{{ category.id }}" class="btn btn-outline-primary">✔️</button></td>
+                    {% else %}
+                        <td style="width: 35%"> {{category.name}} <input type="hidden" value="{{category.name}}" name="category_c"> </td>
+                        <td style="width: 10%"> <button type="submit" name="rename" value="{{ category.name }}" class="btn btn-outline-primary">✏️</button></td>
+                    {% endif %}
+
+                    {% if edit_lim == True and category.name == category_p %}
+                        <td style="width: 35%"><input class="form-control" style="width: auto; display: inline !important" type="text" value="{{category.limit}}" name="limit"> <input type="hidden" value="{{category.id}}" name="category_id"> </td>
+                        <td style="width: 10%"> <button type="submit" name="edit_limit_ok" value="{{ category.id }}" class="btn btn-outline-primary">✔️</button></td>
+                    {% else %}
+                        <td style="width: 35%"> {{category.limit}} <input type="hidden" value="{{category.name}}" name="category"> </td>
+                        <td style="width: 10%"> <button type="submit" name="edit_limit" value="{{ category.name }}" class="btn btn-outline-primary">✏️</button></td>
+                    {% endif %}
+                    <td>
+                        <input class="form-check-input" type="checkbox" value="{{ category.id }}" name="minimal_spending" {% if category.goal_as_little_as_possible == 1 %} checked {% endif %}>
+                    </td>
+                    <td></td>
+                    <td>
+                        <input class="form-check-input" type="checkbox" value="{{ category.id }}" name="well_distributed_spending" {% if category.goal_well_distributed == 1 %} checked {% endif %}>
+                    </td>
+                    <td></td>
+                    <td style="width: 35%"><input class="form-control" style="width: auto; display: inline !important" type="text" value="{{category.goal_x_less}}" name="goal_x_less"> <input type="hidden"> </td>
+                    <td></td>
+                    <td style="width: 10%">
+                        <button class="btn btn-outline-primary" type="submit" name="delete" value="{{ category.name }}">🗑️</button>
+                    </td>
+            </tr>
+        {% endfor %}
+        {% if add_cat == True %}
+            <tr> 
+                {% for field in form %}
+                    <td style="width: 35%">{{ field }} </td>
+                    <td></td>
+                {% endfor %}
+                <!-- Add id attributes to each form field (so that they can be filled up by a chosen template category)-->
+                <script>
+                    document.querySelectorAll('form td input').forEach(function(input) {
+                        input.id = input.name;
+                    });
+                </script>
+                <td style="padding-right: 0%; width: 10%"> <input class="btn btn-outline-primary" style="width: auto;" 
+                    type="submit" name="add_category_ok" value="➕"> </td>
+            </tr>
+            <tr> 
+                {% for error in form.non_field_errors %}
+                    <p class="error">{{ error }}</p>
+                {% endfor %}
+            </tr>
+        <!--Adding a dropdown menu for the list of template categories-->
+        <tr>
+            <td colspan="5">
+            <div class="form-inline justify-content-end">
+                <div class="dropdown">
+                <button id="templateDropdown" type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
+                    Choose from pre-made templates
+                </button>
+                <ul id="templateDropdown-menu" class="dropdown-menu">
+                    {% for tp in template_categories %}
+                    <li><a id="templateDropdown-item" class="dropdown-item" href="#" data-id="{{ tp.id }}" 
+                        data-name="{{ tp.name }}"
+                        data-limit="{{ tp.limit }}">{{ tp.name }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                </div>
+            </div>
+            </td>
+        </tr>
+        {% endif %}
+    </table>
+    <center>
+        <input type="submit" name="add_category" value="+ Add Category" class="btn btn-outline-primary">
+    </center>
+    </br>
+    </br>
+
+    <center>
+        <input type="submit" name="confirm_accounts_session" value="Confirm" class="btn btn-outline-primary">
+    </center>
+</form>
+</br>
+</br>
+{% endblock %}

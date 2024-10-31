@@ -1,0 +1,83 @@
+{% extends 'partials/main_layout_template.html' %}
+{% block header %}
+<h1>Manage your spending categories</h1>
+{% endblock %}
+
+{% block content %}
+
+{% if error %}
+
+    <p class="error"> {{ error }}</p>
+
+{% endif %}
+
+<h4> Active Model Concrete Categories </h4>
+</br>
+<table class="table table-hover">
+    <tr>
+        <th> Category </th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th> Rename </th>
+    </tr>
+    {% for category in active_model_concrete_categories %}
+        <tr class="justify-content-between">
+            <form method="post">
+                {% csrf_token %}
+                {% if edit_cat == True and category.current_name == category_processed_string %}
+                    <td style="width: 35%"><input type="text" class="form-control" style="width: auto; display: inline !important" value="{{category.current_name}}" name="category_name"> <input type="hidden" value="{{category.id}}" name="category_id">  </td>
+                {% else %}
+                    <td style="width: 35%"> {{category.current_name}} <input type="hidden" value="{{category.current_name}}" name="category"> </td>
+                {% endif %}
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                {% if edit_cat == True and category.current_name == category_processed_string %}
+                    <td style="width: 10%"><input type="submit" name="rename_ok" value="✔️" class="btn btn-outline-primary"></td>
+                {% else %}
+                    <td style="width: 10%"> <input type="submit" name="rename" value="✏️" class="btn btn-outline-primary"></td>
+                {% endif %}
+                </td>
+            </form> 
+        </tr>
+    {% endfor %}
+</table>
+</br>
+
+<h4> Inactive Model Concrete Categories </h4>
+</br>
+<table class="table table-hover">
+    <tr>
+        <th> Category </th>
+        <th> </th>
+        <th></th>
+        <th></th>
+        <th> Rename </th>
+    </tr>
+    
+    {% for category in inactive_model_concrete_categories %}
+        <tr class="justify-content-between">
+            <form method="post">
+                {% csrf_token %}
+                {% if edit_cat == True and category.current_name == category_processed_string %}
+                    <td style="width: 35%"><input class="form-control" style="width: auto; display: inline !important" type="text" value="{{category.current_name}}" name="category_name"> <input type="hidden" value="{{category.id}}" name="category_id">  </td>
+                {% else %}
+                    <td style="width: 35%"> {{category.current_name}} <input type="hidden" value="{{category.current_name}}" name="category"> </td>
+                {% endif %}
+                    <td></td>
+                    <td></td>
+                    <td></td> 
+                {% if edit_cat == True and category.current_name == category_processed_string %}
+                    <td style="width: 10%"><input type="submit" name="rename_ok" value="✔️" class="btn btn-outline-primary"></td>
+                {% else %}
+                    <td style="width: 10%"> <input type="submit" name="rename" value="✏️" class="btn btn-outline-primary"></td>
+                {% endif %}
+                </td>
+            </form> 
+        </tr>
+    {% endfor %}
+</table>
+</br>
+
+{% endblock %}

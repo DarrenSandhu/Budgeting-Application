@@ -1,0 +1,38 @@
+{% extends 'partials/main_layout_template.html' %}
+
+{% block header %}
+<h1>Accounts Session Review </h1>
+{% endblock %}
+
+{% block content %}
+
+{% if error_present %}
+
+    <p class="error"> {{ error }}</p>
+
+{% endif %}
+
+</br>
+<h3>Here is a review of your recent cycle for {{ start_date }} to {{ end_date }}.</h3>
+</br>
+<p>
+    In this review, you will see a finance report of this category cycle, you'll see a summary of the
+    points you have achieved and you will be able to set your budget and goals for the next cycle.
+</p>
+</br>
+<p>
+    Before we continue, it's your final chance to add any last spendings for this category cycle.
+</p>
+</br>
+
+{% include "partials/history.html" with category_filter_visible=True my_url='accounts_session_1_add_additional_spendings_for_recent_cycle' timefilter=timefilter categoryfilter=categoryfilter cyclefilter='Current'%}
+
+</br>
+<!-- Button redirecting to next accounts session page (cycle finance report) -->
+<center>
+    <a href="{% url 'cycle_finance_report' %}" class="btn btn-outline-primary">Next</a>
+</center>
+</br>
+</br>
+
+{% endblock %}

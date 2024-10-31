@@ -1,0 +1,14 @@
+{% extends 'partials/main_layout_template.html' %}
+
+{% block header %}
+<h1>Personal Spending Tracker</h1>
+{% endblock %}
+
+{% block nav_bar%}{% endblock %}
+{% block top_bar%}{% endblock %}
+
+{% block content %}
+  <p>Welcome to Personal Spending Tracker</p>
+  <p><a href='{% url 'sign_up' %}'><button class="btn btn-outline-primary">Sign Up</button></a></p>
+  <p><a href='{% url 'log_in' %}'><button class="btn btn-outline-primary">Log In</button></a></p>
+{% endblock %}

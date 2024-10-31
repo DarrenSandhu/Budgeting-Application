@@ -1,0 +1,15 @@
+{% extends 'partials/main_layout_template.html' %}
+{% block content %}
+<div class="form-group">  
+  <h1>Edit Profile</h1>
+  <form action="{% url 'edit_profile' %}" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Update">
+  </form>
+  <p> &nbsp; </p>
+  <form action="{% url 'change_password' %}">
+      <input type="submit" value="Change Password">
+  </form>
+</div>
+{% endblock %}

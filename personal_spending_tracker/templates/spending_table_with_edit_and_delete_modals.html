@@ -1,0 +1,109 @@
+<!-- Pop up for editing transaction -->
+<div class="modal fade" id="editModal{{ spending.id }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Transaction</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'edit_spending' spending.id %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ spending.id }}">
+
+                    <div class="form-group">
+                        <label for="title">Title:</label>
+                        <input type="text" class="form-control" name="title" value="{{ spending.title }}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <textarea class="form-control" name="description">{{ spending.description }}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="amount">Amount:</label>
+                        <input type="number" class="form-control" name="amount" value="{{ spending.amount }}" required step="any">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Category:</label>
+                        <select class="form-control" name="category" required>
+                            {% for category in categories %}
+                                <option value="{{ category }}" {% if spending.category.model_concrete_category == category %}selected{% endif %}>{{ category }} </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="photo">Photo:</label>
+                        <input type="file" class="form-control" name="photo" value="{% if spending.photo %}{{MEDIA_URL}}{{ spending.photo }}{% endif %}">
+                        {% if spending.photo %}
+                            <img src="{{MEDIA_URL}}{{ spending.photo }}" class="img-thumbnail" style="max-width: 200px;">
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" name="remove_photo" id="remove_photo">
+                                <label class="form-check-label" for="remove_photo">
+                                    Remove photo
+                                </label>
+                            </div>
+                        {% else %}
+                            <p>No photo uploaded</p>
+                        {% endif %}
+                    </div>                       
+
+                    <div class="form-group">
+                        <label for="date">Date:</label>
+                        <input type="date" class="form-control date-input" name="date" value="{{ spending.date|date:'Y-m-d' }}" required>
+                    </div>
+
+                    <br><div class="form-group">
+                        <label for="is_regular">Is Regular:</label>
+                        <input type="checkbox" class="form-check-input" name="is_regular" id="is_regular" {% if spending.is_regular %}checked{% endif %} value=True>
+                    </div>
+
+                    <div id="hidden_fields" style="display: none">
+
+                        <div class="form-group">
+                            <label for="frequency">Frequency:</label>
+                            <select class="form-control" name="frequency" id="frequency">
+                                {% for f in frequency %}
+                                    <option value="{{ f }}" {% if spending.frequency == f %}selected{% endif %}>{{ f }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="date">Next Due Date:</label>
+                            <input type="date" class="form-control" id="next_due_date" name="next_due_date" value="{{ spending.next_due_date }}" min="{{ spending.date|date:'Y-m-d' }}">
+                        </div>
+
+                    </div>
+
+                    <br><button type="submit" class="btn btn-primary">Save changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pop up for deleting transaction -->
+<div class="modal fade" id="deleteModal{{ spending.id }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Transaction</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this transaction?</p>
+            </div>
+            <div class="modal-footer">
+                <form method="post" action="{% url 'delete_spending' spending.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

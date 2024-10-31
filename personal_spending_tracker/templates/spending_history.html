@@ -1,0 +1,17 @@
+{% extends 'partials/main_layout_template.html' %}
+
+{% block header %}
+<h1>Spending History</h1>
+{% endblock %}
+
+{% block content %}
+
+{% include "partials/history.html" with category_filter_visible=True my_url='spending_history' my_category=''%}
+
+{% if error_present %}
+
+    <p class="error"> {{ error }}</p>
+
+{% endif %}
+
+{% endblock %}

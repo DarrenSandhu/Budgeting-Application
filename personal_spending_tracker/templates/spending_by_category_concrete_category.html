@@ -1,0 +1,301 @@
+{% extends 'partials/main_layout_template.html' %}
+{% block optionalscript %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.0"></script>
+
+<script type="module">
+  function parse_chart_data(data){
+    var data_cleaned = data.replace(/&quot;/g, '"').replace(/&amp;/g, '&');
+    try {
+        var data = JSON.parse(data_cleaned);
+    } catch (error) {
+        console.error(error);
+    }
+    return data;
+  };
+
+  /* colours definition */
+    const BACKGROUND_COLOURS = [
+      'rgba(75, 192, 192, 0.2)',
+      'rgba(54, 162, 235, 0.2)',
+      'rgba(153, 102, 255, 0.2)',
+      'rgba(201, 203, 207, 0.2)',
+      'rgba(255, 99, 132, 0.2)',
+      'rgba(255, 159, 64, 0.2)',
+      'rgba(255, 205, 86, 0.2)',
+    ];
+
+    const BORDER_COLOURS = [
+      'rgb(75, 192, 192)',
+      'rgb(54, 162, 235)',
+      'rgb(153, 102, 255)',
+      'rgb(201, 203, 207)', 
+      'rgb(255, 99, 132)',
+      'rgb(255, 159, 64)',
+      'rgb(255, 205, 86)',
+    ];
+
+  /* DISTRIBUTION CHART */
+    var distribution_chart_data = parse_chart_data('{{distribution_chart_data}}');
+    var number_of_days = '{{number_of_days}}';
+
+    /* datasets for each series of data */
+    const ith_spending_of_the_day = Object.values(distribution_chart_data).map((item) => item.data);
+    const labels = Array.from({length: number_of_days}, (_, i) => i + 1);
+    const datasets = [];
+    let hide = [];
+
+    /* iterate through the data array to create the datasets */
+    for (let i = 0; i <ith_spending_of_the_day.length; i++) {
+      const dataset = {
+        label: "",
+        data: ith_spending_of_the_day[i],
+        backgroundColor: BACKGROUND_COLOURS[i],
+        borderColor: BORDER_COLOURS[i],
+        borderWidth: 1,
+        order: 1,
+        stack: 'stack1',
+      };
+    datasets.push(dataset);
+    hide.push(1);
+    }
+
+    /* "now" marker generation */
+    if ('{{today}}' != '0'){
+      var today = '{{today}}'
+      today = JSON.parse(today)
+
+      const dataset_3 =  {
+        label: '',
+        data: [[today, 0, 3]], 
+        borderColor: 'rgba(255, 99, 132)',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderWidth: 2,
+        type: 'bubble',
+        order: 0,
+      };
+      datasets.push(dataset_3);
+      hide.push(1);
+    }
+
+    /* threshold generation */
+    let average_thershold = parseInt('{{average_thershold}}');
+    let average_thershold_devation_allowed = parseInt('{{average_thershold_devation_allowed}}');
+
+    const threshold_1 = [];
+    for (let i = 0; i < number_of_days; i++) {
+      threshold_1.push(average_thershold);
+    }
+
+    const threshold_2 = [];
+    for (let i = 0; i < number_of_days; i++) {
+      threshold_2.push(average_thershold_devation_allowed);
+    }
+
+    const dataset_1 =  {
+      label: 'average spending recommended',
+      data: threshold_1, 
+      borderColor: 'rgba(255, 99, 132, 0.4)',
+      backgroundColor: 'rgba(0, 0, 0, 0)',
+      borderWidth: 2,
+      fill: false,
+      pointRadius: 0,
+      type: 'line',
+      order: 0,
+    };
+    datasets.push(dataset_1);
+    hide.push(0);
+
+    const dataset_2 =  {
+      label: 'average spending recommended + 10%',
+      data: threshold_2, 
+      borderColor: 'rgba(255, 99, 132, 0.9)',
+      backgroundColor: 'rgba(0, 0, 0, 0)',
+      borderWidth: 2,
+      fill: false,
+      pointRadius: 0,
+      type: 'line',
+      order: 0,
+    };
+    datasets.push(dataset_2);
+    hide.push(0);
+
+    /* generation of an array defining lebels of elements of which index to hide in the legend */
+    const no_to_be_hidden = hide.reduce((a, b) => {
+      return a + b;
+    }, 0);
+
+    let hide_indices = []
+    for(let i = 0; i < no_to_be_hidden; i++){
+      hide_indices.push(i)
+    }
+
+  const config_distribution = {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: datasets,
+      },
+      options: {
+        plugins: {
+          legend: {
+            display: true,
+            labels: {
+                filter: function(item, chart) {
+                    return ! hide_indices.includes(item.datasetIndex);
+                }
+            }
+          },
+        },
+        animation: {
+          duration: 0,
+        },
+        scales: {
+          x: {
+            stacked: true,
+            title: {
+              display: true,
+              text: 'day',
+              align: 'end',
+            }
+          },
+          y: {
+            beginAtZero: true, 
+            title: {
+                display: true,
+                text: '£',
+                align: 'end',
+            },
+          }
+        }
+      },
+    };
+
+  /* CUMULATIVE CHART */
+    var cumulative_chart_data = parse_chart_data('{{json_data}}');
+    var category_name = '{{category.model_concrete_category.current_name}}'.replace(/&quot;/g, '"').replace(/&amp;/g, '&');
+    var category_data = cumulative_chart_data[category_name];
+
+    /* datasets for each series of data */
+    const budget = [0, category_data.budget, 0];
+    const spending = [0, category_data.spending, 0];
+    const money_left = [0, category_data.money_left, 0];
+    const threshold = Array(3).fill(budget[1] - today);
+
+    const config_cumulative = {
+      data: {
+        labels: '   ',
+        datasets: [
+          {
+            data: spending,
+            borderWidth: 1,
+            borderRadius: 5,
+            backgroundColor: BACKGROUND_COLOURS,
+            borderColor: BORDER_COLOURS,
+            type: 'bar', 
+            barPercentage: 0.80, 
+            grouped: false,
+            order: 1, 
+          },
+          {
+            data: budget,
+            borderColor: "grey",
+            borderWidth: 0.5,
+            borderRadius: 5,
+            backgroundColor: "lightgrey",
+            type: 'bar', 
+            barPercentage: 1, 
+            grouped: false,
+            order: 1,
+          },
+          {
+            label: 'th2',
+            data: [[0,0,0],[1 ,budget[1] - today, 3],[0,0,0]], 
+            borderColor: 'rgba(255, 99, 132)',
+            backgroundColor: 'rgba(255, 99, 132, 0.5)',
+            borderWidth: 2,
+            type: 'bubble',
+            order: 0,
+          }
+        ]
+      },
+      options: {
+        plugins: {
+          legend: {
+            display: false,
+          }, 
+        },
+        scales: {
+          y: {
+              max: budget[1],
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: '# of days left in the cycle',
+                align: 'end',
+              },
+              position: 'right',
+              ticks:  {
+                color: 'grey',
+                callback: function(value, index, values) {
+                  return value === budget[1] - today ? 'today' : value.toString();
+                },
+              },
+              afterBuildTicks: function(scale) {
+                  scale.ticks.push({value: budget[1] - today, label: 'today'});
+                  scale.ticks.sort();
+              }, 
+            }
+        },
+        animation: {
+          duration: 0,
+        },
+      },
+    };
+
+  window.onload = function() {
+    var ctx_distribution = document.getElementById("distrubutionChart").getContext('2d');
+    window.myPie = new Chart(ctx_distribution, config_distribution);
+    var ctx_cumulative = document.getElementById('cumulativeChart').getContext('2d');
+    window.myPie = new Chart(ctx_cumulative, config_cumulative);
+  };
+</script>
+{% endblock %}
+
+{% block header %}
+  <h1> {{category.model_concrete_category.current_name}} </h1>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row"> 
+    {% if cyclefilter == "Current" %}
+      <h3> Current month spending </h3>
+    {% else %}
+      <h3> {{timeframe_string}} spending </h3>
+    {% endif %}
+  </div>
+  </br>
+  <div class="row"> 
+    <div class="col-9"><h7> Distribution of spending this month </h7></div>
+    <div class="col-3"><h7> Cumulative spending this month </h7></div> 
+  </div>
+  <div class="row">
+    <div class="col-9">
+      <canvas class="canvas-linked-height" id="distrubutionChart" height="400" width="850"></canvas> 
+    </div>
+    <div class="col-3 d-flex justify-content-center"> 
+      <canvas class="canvas-linked-height" id="cumulativeChart" height="1000" width="400" ></canvas>
+    </div>
+  </div>
+  </br>
+  <div class="row"> <h3> Spending history </h3></div>
+  </br>
+  <div class="row">
+    {% include "partials/history.html" with category_filter_visible=False my_url='spending_by_category_concrete_category' my_category=category.model_concrete_category.current_name%}
+  </div>
+</div>
+
+<p class="red-text">  </p>
+  
+  
+{% endblock %}

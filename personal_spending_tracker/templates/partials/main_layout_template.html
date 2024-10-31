@@ -1,0 +1,34 @@
+{% extends 'partials/base.html' %}
+{% block optionalscript %}
+{% endblock %}
+
+{% block body %}
+<div id="main_container" class="container"> 
+    <div style="z-index: 1000;" class="row justify-content-center position-sticky top-0">
+        <div class="col-2 nav-bar-col"></div>
+        <div id="upper_row" class="col-10">
+        </br>
+            {% block top_bar%}{% include 'partials/topbar.html' %}{% endblock %}
+        </div>
+    </div>
+    <div style="z-index: -1;" id="main_row" class="row justify-content-center">
+        
+        <div class="col-2 nav-bar-col">
+            {% block nav_bar%}{% include 'partials/navbar.html' %}{% endblock %}
+        </div>
+        
+        <div class="col-10">
+        </br>
+            <!-- CONTENT SECTION -->
+                <!-- title of the page -->
+                    {% block header %}
+                    {% endblock %}
+            </br>
+
+                <!-- the rest of the content -->
+                {% block content %}
+                {% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}

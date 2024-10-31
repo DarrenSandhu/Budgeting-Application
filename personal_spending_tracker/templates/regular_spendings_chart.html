@@ -1,0 +1,62 @@
+{% extends 'partials/main_layout_template.html' %}
+{% block content %}
+  <h1>Your Upcoming Spendings</h1>
+  <div>
+    {% if no_regular_spendings %}
+      <p>No regular spendings found.</p>
+    {% else %}
+      <canvas id="myChart"></canvas>
+    {%  endif %}
+
+    <br>
+    <div style="display: flex; justify-content: space-between;">
+      <div>
+        <span style="display: inline-block; height: 12px; width: 12px; background-color: #0074D9;"></span> Days Remaining
+      </div>
+      <div>
+        <span style="display: inline-block; height: 12px; width: 12px; background-color: #ff0000;"></span> Near Upcoming Spendings
+      </div>
+    </div>
+
+    <br>
+    <br>
+    <br>
+    <a href='{% url 'add_spending' %}'><button style="width: 100% !important;"  class="btn btn-outline-primary" type="button"> + Add Spending</button></a>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    const ctx = document.getElementById('myChart');
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: [{% for spending in chart_data %}"{{ spending.title }}",{% endfor %}],
+        datasets: [{
+          label: 'Days Remaining',
+          data: [{% for spending in chart_data %}{{ spending.days_remaining }},{% endfor %}],
+          backgroundColor: [{% for spending in chart_data %}"{% if spending.is_close %}#ff0000{% else %}#0074D9{% endif %}",{% endfor %}],
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            title: {
+              display: true,
+              text: 'Days Remaining'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Spending Title'
+            }
+          }
+        }
+      }
+    });
+  </script>
+{% endblock %}

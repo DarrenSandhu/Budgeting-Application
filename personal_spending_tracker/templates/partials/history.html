@@ -1,0 +1,171 @@
+{% if error_present %}
+
+    <p class="error"> {{ error }}</p>
+
+{% endif %}
+<!-- Time filter dropdown -->
+<div class="dropdown" style="float: left;">
+    <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
+        Filter Spending By Time
+    </button>
+    <ul class="dropdown-menu">
+        <li>
+            <a class="dropdown-item{% if timefilter == 'All' %} active{% endif %}" href="{% url my_url timefilter='All' categoryfilter=categoryfilter cyclefilter=cyclefilter %}">All</a>
+        </li>
+        {% for option in time_options %}
+        <li>
+            {% if my_category %}
+                <a class="dropdown-item" href="{% url my_url categoryfilter=my_category timefilter=option cyclefilter=cyclefilter %}">{{ option }}</a>
+            {% else %}
+                <a class="dropdown-item" href="{% url my_url categoryfilter=categoryfilter timefilter=option cyclefilter=cyclefilter %}">{{ option }}</a>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<!-- Category filter dropdown -->
+{% if category_filter_visible %}
+    <div class="dropdown" style="float: left; padding-left: 1vw;">
+        <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
+            Filter Spending By Category
+        </button>
+        <ul class="dropdown-menu">
+            <li>
+                <a class="dropdown-item{% if timefilter == 'All' %} active{% endif %}" href="{% url my_url timefilter=timefilter categoryfilter='All' cyclefilter=cyclefilter %}">All</a>
+            </li>
+            {% for category in categories %}
+            <li>
+                {% if cyclefilter %}
+                    <a class="dropdown-item" href="{% url my_url timefilter=timefilter categoryfilter=category cyclefilter=cyclefilter %}">{{ category }}</a>
+                {% else %}
+                    <a class="dropdown-item" href="{% url my_url timefilter=timefilter categoryfilter=category cyclefilter='Current' %}">{{ category }}</a>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}
+
+<!-- Display filters in use -->
+{% if timefilter == 'All' and categoryfilter == 'All' %}
+    <p><a href="#" class="btn btn-outline-primary" style="float: right;">Displaying All</a></p>
+{% elif timefilter == 'All' %}
+    <p><a href="#" class="btn btn-outline-primary" style="float: right;">Displaying {{ categoryfilter }}</a></p>
+{% elif categoryfilter == 'All' %}
+    <p><a href="#" class="btn btn-outline-primary" style="float: right;">Displaying {{ timefilter }}</a></p>
+{% else %}
+    <p><a href="#" class="btn btn-outline-primary" style="float: right;">Displaying {{ timefilter }} and {{ categoryfilter }}</a></p>
+{% endif %}
+
+</br>
+</br>
+
+<!-- Display transactions -->
+<table class="table table-hover">
+    <tr>
+        <th> Title </th>
+        <th> Description </th>
+        <th> Amount </th>
+        <th> Category </th>
+        <th> Photo </th>
+        <th> Date </th>
+        <th> Actions </th>
+    </tr>
+
+    {% if no_of_transactions == 0 %}
+        <tr>
+            <td>No Transactions</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    {% else %}
+    {% for transaction in transactions %}
+        <tr>
+            {% for spending in transaction|slice:":1" %}
+                <td>{{ spending.title }}</td>
+                <td>{{ spending.description }}</td>
+                <td>{{ spending.amount }}</td>
+                <td>{{ spending.category.model_concrete_category }}</td>
+                <td>
+                    {% if spending.photo %}
+                        <img src="{{MEDIA_URL}}{{ spending.photo }}" class="img-thumbnail" style="max-width: 200px;">
+                    {% else %}
+                        <span>No photo uploaded</span>
+                    {% endif %}
+                </td>
+                <td>{{ spending.date }}</td>
+                <td> 
+                    {% if spending.date >= first_cycle_date and spending.date <= last_cycle_date%}
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ spending.id }}">Edit</button> 
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ spending.id }}">Delete</button>
+                    {% else %}
+                        <span class="notify"> Inactive Cycle </span>
+                    {% endif %}
+                    {% include 'spending_table_with_edit_and_delete_modals.html' %}
+                </td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+    {% endif %}
+
+</table>
+</br>
+
+<!-- Button redirecting to add spending page -->
+<p><a href="{% url 'add_spending' %}" class="btn btn-outline-primary">+ Add Transaction</a></p>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const isRegularCheckbox = document.querySelectorAll('[id^="is_regular"]');
+      const hiddenFieldsList = document.querySelectorAll('[id^="hidden_fields"]');
+      const frequencySelect = document.querySelectorAll('[id^="frequency"]');
+      const nextDueDateSelector = document.querySelectorAll('[id^="next_due_date"]');
+    
+      for (let i = 0, len = isRegularCheckbox.length; i < len; i++) {
+        const currentCheckbox = isRegularCheckbox[i];
+        const hiddenFields = hiddenFieldsList[i];
+        const currentFrequency = frequencySelect[i];
+        const currentNextDueDate = nextDueDateSelector[i];
+  
+        if (currentCheckbox.checked) {
+          hiddenFields.style.display = 'block';
+          currentFrequency.required = true;
+          currentNextDueDate.required = true;
+        }
+  
+        currentCheckbox.addEventListener('change', function() {
+          if (currentCheckbox.checked) {
+            hiddenFields.style.display = 'block';
+            currentFrequency.required = true;
+            currentNextDueDate.required = true;
+          } else {
+            hiddenFields.style.display = 'none';
+            currentFrequency.required = false;
+            currentNextDueDate.required = false;
+          }
+        });
+      }
+    });
+  </script>
+
+<script>
+    const forms = document.querySelectorAll('form');
+    const minDate = new Date('{{ first_cycle_date }}');
+    const maxDate = new Date('{{ last_cycle_date }}');
+    
+    forms.forEach((form) => {
+        const dateInput = form.querySelector('input.date-input');
+        form.addEventListener('submit', (event) => {
+            const enteredDate = new Date(dateInput.value);
+            if (enteredDate < minDate || enteredDate > maxDate) {
+                event.preventDefault();
+                alert('Please enter a date within the active cycle period. \n\nActive cycle period: ' + minDate.toDateString() + "  -  " + maxDate.toDateString());
+            }
+        });
+    });
+</script>
+  

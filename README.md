@@ -86,6 +86,3 @@ password : Password123
     * point_award = ((number of days when spending < threshold)/ number of days in the cycle that have already happened)*normalization_factor
 * Cutting spending within a category by X% relative to the previous cycle
     * point_award = award max points if the X% reduction or more achieved, award some points if spending < spending in the previous cycle (let’s say 10 minimum, 100 max * normalisation factor) 
-
-
-# Budgeting-Application

@@ -1,0 +1,173 @@
+{% extends 'partials/main_layout_template.html' %}
+{% block optionalscript %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0"></script>
+
+<script type="module">
+
+  function parse_chart_data(data) {
+    var data_cleaned = data.replace(/&quot;/g, '"').replace(/&amp;/g, '&');
+    try {
+        var data = JSON.parse(data_cleaned);
+    } catch (error) {
+        console.error(error);
+    }
+    return data;
+  };
+    /* colours definition */
+      /* spending data */
+      const BACKGROUND_COLOURS = [
+        'rgba(255, 99, 132, 0.5)',
+        'rgba(255, 159, 64, 0.5)',
+        'rgba(255, 205, 86, 0.5)',
+        'rgba(75, 192, 192, 0.5)',
+        'rgba(54, 162, 235, 0.5)',
+        'rgba(153, 102, 255, 0.5)',
+        'rgba(201, 203, 207, 0.5)'
+      ];
+
+      const BORDER_COLOURS = [
+        'rgb(255, 99, 132)',
+        'rgb(255, 159, 64)',
+        'rgb(255, 205, 86)',
+        'rgb(75, 192, 192)',
+        'rgb(54, 162, 235)',
+        'rgb(153, 102, 255)',
+        'rgb(201, 203, 207)'
+      ];
+      /* budget data */
+      const BUDGET_BACKGROUND_COLOUR = "lightgrey";
+      const BUDGET_BORDER_COLOUR = "grey";
+      
+    /* BUDGET NOW */
+      /* parsing string passed in to json */ 
+      const current_budget_current_state_data = parse_chart_data('{{json_data}}');
+      const today_n = parse_chart_data('{{today}}');
+
+      /* extracting datasets for each series of data */
+      const labels_now = Object.keys(current_budget_current_state_data);
+      const budgetData_now = Object.values(current_budget_current_state_data).map((item) => item.budget);
+      const spendingData_now = Object.values(current_budget_current_state_data).map((item) => item.spending);
+      const money_left_now = Object.values(current_budget_current_state_data).map((item) => item.money_left);
+      
+      // dataprocessing 
+      const n = labels_now.length;
+      const threshold = Array(n).fill([1 ,budgetData_now[0] - today_n, 3]);
+
+      // preparing labels
+      for (let i = 0; i <money_left_now.length; i++){
+        money_left_now[i] = '£' + money_left_now[i] + ' left'
+      };
+      const labels = money_left_now.map(function(e, i) {
+        return [e, " " + labels_now[i]];
+      });
+
+      const config_now = {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              data: budgetData_now,
+              borderColor: BORDER_COLOURS,
+              borderWidth: 1,
+              borderRadius: 5,
+              backgroundColor: "lightgrey",
+              type: 'bar', 
+              barPercentage: 0.50, 
+              grouped: false,
+              order: 2,
+            },
+            {
+              data: spendingData_now,
+              borderWidth: 1,
+              borderRadius: 5,
+              backgroundColor: BACKGROUND_COLOURS,
+              borderColor: BORDER_COLOURS,
+              type: 'bar', 
+              barPercentage: 0.40, 
+              grouped: false,
+              order: 1,
+            },
+            {
+              label: 'th2',
+              data: threshold, 
+              borderColor: 'rgba(255, 99, 132)',
+              backgroundColor: 'rgba(255, 99, 132, 0.5)',
+              borderWidth: 2,
+              type: 'bubble',
+              order: 0,
+            }
+          ]
+        },
+        options: {
+          plugins: {
+            legend: {
+              display: false,
+            },
+          },
+          scales: {
+            y: {
+              max: budgetData_now[0],
+              beginAtZero: true,
+              title: {
+                display: true,
+                text: '# of days left in the cycle',
+                align: 'end',
+              },
+              ticks:  {
+                stepSize: 5,
+                color: 'grey',
+                callback: function(value, index, values) {
+                  return value === budgetData_now[0] - today_n ? 'today' : value.toString();
+                },
+              },
+              afterBuildTicks: function(scale) {
+                  scale.ticks.push({value: budgetData_now[0] - today_n, label: 'today'});
+                  scale.ticks.sort();
+              },
+            },
+            x: {
+              ticks: {
+                color: BORDER_COLOURS,
+              }
+            }
+          },
+        }
+      };
+
+      window.onload = function() {
+        var ctx_now = document.getElementById('chart_now').getContext('2d');
+        window.myPie = new Chart(ctx_now, config_now);
+      };
+      
+  </script>
+
+{% endblock %}
+
+{% block header %}
+  <h1>Personal Spending Tracker</h1>
+{% endblock %}
+
+{% block content %}
+
+<!-- {% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-dismissible alert-success">
+      <button type="button" class="close" data-dismiss="alert">
+      ×
+      </button>
+      <strong>{{message}}</strong>
+    </div>
+ {% endfor %}
+{% endif %} -->
+
+  <h4 style="margin-left: 25%; margin-right:25%;"> Your {{month_2}} funds left per budget category </h4>
+</br>
+  <canvas id="chart_now"></canvas>
+</br>
+</br>
+  <a href='{% url 'add_spending' %}'><button style="width: 100% !important;"  class="btn btn-outline-primary" type="button"> + Add Spending</button></a>
+
+{% endblock %}
+

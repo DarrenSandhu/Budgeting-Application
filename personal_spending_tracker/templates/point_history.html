@@ -1,0 +1,93 @@
+{% extends 'partials/main_layout_template.html' %}
+
+{% block header %}
+<h1>Points History</h1>
+{% endblock %}
+
+{% block content %}
+
+{% if error_present %}
+
+    <p class="error"> {{ error }}</p>
+
+{% endif %}
+<!-- Time filter dropdown -->
+<div class="dropdown" style="float: left;">
+    <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
+        Filter Points By Time
+    </button>
+    <ul class="dropdown-menu">
+        <li>
+            <a class="dropdown-item{% if timefilter == 'All' %} active{% endif %}" href="{% url 'point_history' timefilter='All' categoryfilter=categoryfilter %}">All</a>
+        </li>
+        {% for option in time_options %}
+        <li>
+            <a class="dropdown-item{% if timefilter == option %} active{% endif %}" href="{% url 'point_history' timefilter=option categoryfilter=categoryfilter %}">{{ option }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<!-- Category filter dropdown -->
+<div class="dropdown" style="float: left; padding-left: 1vw;">
+    <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown">
+        Filter Points By Category
+    </button>
+    <ul class="dropdown-menu">
+        <li>
+            <a class="dropdown-item{% if categoryfilter == 'All' %} active{% endif %}" href="{% url 'point_history' timefilter=timefilter categoryfilter='All' %}">All</a>
+            
+        </li>
+        {% for category in categories %}
+        
+        <li>
+            <a class="dropdown-item{% if categoryfilter == category %} active{% endif %}" href="{% url 'point_history' timefilter=timefilter categoryfilter=category %}">{{ category }}</a>
+        </li>
+        
+        {% endfor %}
+    </ul>
+</div>
+
+
+<!-- Display filters in use -->
+{% if timefilter == 'All' and categoryfilter == 'All' %}
+    <p><a href="#" class="btn btn-outline-primary" style="float: right;">Displaying All</a></p>
+{% elif timefilter == 'All' %}
+    <p><a href="#" class="btn btn-outline-primary" style="float: right;">Displaying {{ categoryfilter }}</a></p>
+{% elif categoryfilter == 'All' %}
+    <p><a href="#" class="btn btn-outline-primary" style="float: right;">Displaying {{ timefilter }}</a></p>
+{% else %}
+    <p><a href="#" class="btn btn-outline-primary" style="float: right;">Displaying {{ timefilter }} and {{ categoryfilter }}</a></p>
+{% endif %}
+</br>
+</br>
+
+<!-- Display achievements -->
+<table class="table table-hover">
+    <tr>
+        <th> Reward </th>
+        <th> Points </th>
+        <th> Category </th>
+        <th> Date </th>
+    </tr>
+
+    {% if no_of_achievements == 0 %}
+        <tr>
+            <td>No Points achieved</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    {% else %}
+        {% for achievement in achievements %}
+            <tr>
+                {% for value in achievement %}
+                    <td>{{ value }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    {% endif %}
+
+</table>
+</br>
+{% endblock %}

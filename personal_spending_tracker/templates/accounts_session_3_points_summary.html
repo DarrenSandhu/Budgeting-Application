@@ -1,0 +1,49 @@
+{% extends 'partials/main_layout_template.html' %}
+
+{% block header %}
+<h1>Points Summary Review </h1>
+{% endblock %}
+
+{% block content %}
+
+{% if error_present %}
+
+    <p class="error"> {{ error }}</p>
+
+{% endif %}
+</br>
+<!-- Display achievements -->
+<table class="table table-hover">
+    <tr>
+        <th> Reward </th>
+        <th> Points </th>
+        <th> Category </th>
+        <th> Date </th>
+    </tr>
+
+    {% if no_of_achievements == 0 %}
+        <tr>
+            <td>No Points achieved</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    {% else %}
+        {% for achievement in achievements %}
+            <tr>
+                {% for value in achievement %}
+                    <td>{{ value }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    {% endif %}
+
+</table>
+</br>
+<!-- Button redirecting to next accounts session page (accounts_session) -->
+<center>
+  <a href="{% url 'accounts_session' %}" class="btn btn-outline-primary">Next</a>
+</center>
+</br>
+</br>
+{% endblock %}
