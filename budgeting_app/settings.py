@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-n)hfy#u#v*stgq15dz73*4e5pa$2$)^xvx(=q!%i_jolr5c3!='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'budgeting_app.wsgi.application'
 DATABASES = {
     'default': dj_database_url.config(
         # Replace this value with your local database's connection string.
-        default='postgresql://postgres:postgres@localhost:5432/mysite',
+        default='postgresql://mysite:mpiasj57JRzJ9z4yyJqSUZovKbyTr1wb@dpg-cskoqc2j1k6c73bkuatg-a.oregon-postgres.render.com/mysite_20ym',
         conn_max_age=600
     )
 }
