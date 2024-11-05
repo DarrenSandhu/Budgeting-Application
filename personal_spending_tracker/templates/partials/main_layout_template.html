@@ -5,40 +5,30 @@
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
         const contentContainer = document.getElementById('contentContainer');
-        
-        // Toggle the sidebar's visibility
-        if (sidebar.classList.contains('collapsed')) {
-            sidebar.classList.remove('collapsed');
-            contentContainer.classList.remove('shifted');
-        } else {
-            sidebar.classList.add('collapsed');
-            contentContainer.classList.add('shifted');
-        }
+        sidebar.classList.toggle('collapsed');
+        contentContainer.classList.toggle('shifted');
     }
 </script>
 {% endblock %}
 
 {% block body %}
 <div id="main_container" class="container-fluid">
-
     <div class="row">
         <!-- Left Sidebar Navigation -->
-        <div id="sidebar" class="col-md-2 col-sm-3 d-none d-sm-block position-fixed" style="height: 100vh; padding-top: 3.5rem;">
+        <div id="sidebar" class="col-md-2 col-sm-3 position-fixed" style="height: 100vh; padding-top: 3.5rem;">
             {% block nav_bar %}
                 {% include 'partials/navbar.html' %}
             {% endblock %}
         </div>
-        
-        <!-- Main Content Area with ID for toggle targeting -->
+
+        <!-- Main Content Area -->
         <div id="contentContainer" class="col-md-10 offset-md-2 col-sm-9 offset-sm-3">
-            <!-- Sticky Top Bar -->
-            <div class="position-sticky top-0 bg-white shadow-sm" style="z-index: 100000;">
+            <div class="position-sticky top-0 bg-white shadow-sm" style="z-index: 1000;">
                 {% block top_bar %}
                     {% include 'partials/topbar.html' %}
                 {% endblock %}
             </div>
 
-            <!-- Content Area -->
             <div id="header" class="py-3">
                 {% block header %}{% endblock %}
             </div>
