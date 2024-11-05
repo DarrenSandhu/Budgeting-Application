@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-n)hfy#u#v*stgq15dz73*4e5pa$2$)^xvx(=q!%i_jolr5c3!=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['darrensandhu.pythonanywhere.com']
 
 
 # Application definition
@@ -133,12 +133,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #User model
 AUTH_USER_MODEL = 'personal_spending_tracker.User'
 
-#Email settings details 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend' 
-EMAIL_HOST = 'smtp.outlook.com' 
+#Email settings details
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.outlook.com'
 EMAIL_PORT = 587
-EMAIL_USE_TLS = True 
-EMAIL_HOST_USER = 'no-reply-spending-tracker@outlook.com' 
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'no-reply-spending-tracker@outlook.com'
 EMAIL_HOST_PASSWORD = 'wanxop-fyxsu8-xukHun'
 
 # Media files
