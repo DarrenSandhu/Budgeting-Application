@@ -1,6 +1,15 @@
 {% extends 'partials/main_layout_template.html' %}
 {% block optionalscript %}
 
+<script>
+  function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const contentContainer = document.getElementById('contentContainer');
+      sidebar.classList.toggle('collapsed');
+      contentContainer.classList.toggle('shifted');
+  }
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0"></script>
 
 <script type="module">
