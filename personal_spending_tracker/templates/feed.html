@@ -3,11 +3,16 @@
 
 <script>
   function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      const contentContainer = document.getElementById('contentContainer');
-      sidebar.classList.toggle('collapsed');
-      contentContainer.classList.toggle('shifted');
-  }
+    const sidebar = document.getElementById('sidebar');
+    const contentContainer = document.getElementById('contentContainer');
+    const main_container = document.getElementById('main_container');
+    const topbarContainer = document.getElementById('topbarContainer');
+
+    sidebar.classList.toggle('collapsed');
+    contentContainer.classList.toggle('shifted');
+    main_container.classList.toggle('expanded');
+    topbarContainer.classList.toggle('expanded');
+}
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0"></script>

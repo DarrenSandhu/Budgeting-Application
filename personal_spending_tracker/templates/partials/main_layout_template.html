@@ -5,8 +5,13 @@
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
         const contentContainer = document.getElementById('contentContainer');
+        const main_container = document.getElementById('main_container');
+        const topbarContainer = document.getElementById('topbarContainer');
+
         sidebar.classList.toggle('collapsed');
         contentContainer.classList.toggle('shifted');
+        main_container.classList.toggle('expanded');
+        topbarContainer.classList.toggle('expanded');
     }
 </script>
 {% endblock %}
@@ -23,12 +28,11 @@
 
         <!-- Main Content Area -->
         <div id="contentContainer" class="col-md-10 offset-md-2 col-sm-9 offset-sm-3">
-            <div class="position-sticky top-0 bg-white shadow-sm" style="z-index: 1000;">
+            <div id="topbarContainer">
                 {% block top_bar %}
                     {% include 'partials/topbar.html' %}
                 {% endblock %}
             </div>
-
             <div id="header" class="py-3">
                 {% block header %}{% endblock %}
             </div>

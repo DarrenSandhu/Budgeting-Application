@@ -22,18 +22,19 @@
 }
 
 #main_container.expanded {
-    margin-left: 0; /* Remove left margin to fill the space */
-    width: 2100px; /* Adjust width to fill the space */
+    margin-left: 50px; /* Remove left margin to fill the space */
+    width: 2000px; /* Adjust width to fill the space */
     transition: margin-left 0.5s ease; /* Smooth transition */
 }
 
 /* Content Container */
 #contentContainer {
+    min-height: 100vh; /* Adjust height to fill the space */
     transition: margin-left 0.5s ease; /* Smooth transition */
 }
 
 #contentContainer.shifted {
-    margin-left: 10px; /* Adjust the margin when sidebar is collapsed */
+    margin-left: 0px; /* Adjust the margin when sidebar is collapsed */
     transition: margin-left 0.5s ease; /* Smooth transition */
 }
 
@@ -51,18 +52,21 @@
 }
 
 #sidebar.collapsed {
-    margin-left: -300px; /* Adjust the margin when sidebar is collapsed */
+    margin-left: -285px; /* Adjust the margin when sidebar is collapsed */
     transition: margin-left 0.5s ease; /* Smooth transition */
 }
 
 #toggleSidebarButton {
     position: sticky;
     margin: auto; /* Center the button */
-    background-color: #00c3ff00; /* Blue background */
     color: white; /* White text color */
     border: none; /* Remove borders */
     cursor: pointer; /* Add a pointer cursor on hover */
     z-index: 1001; /* Ensure it appears above other elements */
+}
+
+#toggleSidebarButton:hover {
+    background-color: #ffffff6f; /* Darken the button on hover */
 }
 
 
@@ -73,11 +77,26 @@
 body, html {
     overflow-x: hidden; /* Prevent horizontal scrolling */
 }
+/* Topbar Container styling */
+#topbarContainer {
+    position: fixed;
+    transition: margin-left 0.5s ease; /* Smooth transition */
+    z-index: 10000; 
+    top: 0; 
+    width: 1425px;
+}
+
+#topbarContainer.expanded {
+    transition: margin-left 0.5s ease; /* Smooth transition */
+    width: 1650px;
+}
 
 /* Topbar styling */
 
 #topbar {
     background-color: #00c3ff5a;
+    position: fixed;
+    top: 0;
     color: #0080ff;
     padding: 0.5rem;
     display: flex;
@@ -85,6 +104,8 @@ body, html {
     align-items: center;
     z-index: 1000;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    min-width: 100%;
 }
 
 
@@ -103,6 +124,7 @@ body, html {
     background-color: #02b7ff0b;
     border-radius: 10px;
     height: 70px;           /* Adjust height as needed */
+    margin-top: 55px;
 }
 
 #header_text {
@@ -195,7 +217,7 @@ p{
 
 .navigation_list li:hover{
     color: #FFFFFF !important;
-    background: rgba(0, 206, 213, 0.48);
+    background: rgba(94, 94, 94, 0.32);
     border-radius: 4px;
 }
 
