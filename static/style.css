@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
 .canvas-linked-height{
     /*height:  !important;*/
@@ -13,6 +14,106 @@
 .canvas-cumulative{
     width: 1fr !important;
 }*/
+
+/* Main Container */
+#main_container {
+    transition: margin-left 0.5s ease; /* Smooth transition */
+    width: 100%; /* Adjust width to fill the space */
+}
+
+#main_container.expanded {
+    margin-left: 0; /* Remove left margin to fill the space */
+    width: 2100px; /* Adjust width to fill the space */
+    transition: margin-left 0.5s ease; /* Smooth transition */
+}
+
+/* Content Container */
+#contentContainer {
+    transition: margin-left 0.5s ease; /* Smooth transition */
+}
+
+#contentContainer.shifted {
+    margin-left: 10px; /* Adjust the margin when sidebar is collapsed */
+    transition: margin-left 0.5s ease; /* Smooth transition */
+}
+
+
+/*Sidebar*/
+
+#sidebar {
+    height: 100vh;
+    width: 100%;
+    background-color: #00c3ff78; /* Light background */
+    position: fixed;
+    z-index: 1000; /* Ensure it appears above other elements */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.188);
+    transition: margin-left 0.5s ease; /* Smooth transition */
+}
+
+#sidebar.collapsed {
+    margin-left: -300px; /* Adjust the margin when sidebar is collapsed */
+    transition: margin-left 0.5s ease; /* Smooth transition */
+}
+
+#toggleSidebarButton {
+    position: sticky;
+    margin: auto; /* Center the button */
+    background-color: #00c3ff00; /* Blue background */
+    color: white; /* White text color */
+    border: none; /* Remove borders */
+    cursor: pointer; /* Add a pointer cursor on hover */
+    z-index: 1001; /* Ensure it appears above other elements */
+}
+
+
+#main_container {
+    padding-left: 0; /* Align content properly */
+}
+
+body, html {
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+/* Topbar styling */
+
+#topbar {
+    background-color: #00c3ff5a;
+    color: #0080ff;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+/* Content */
+#content{
+    background-color: #7a5b3e00;
+    border-radius: 10px;
+    padding-top: 30px;
+}
+
+/* Header */
+#header {
+    display: flex;           /* Enable Flexbox */
+    align-items: center;     /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    background-color: #02b7ff0b;
+    border-radius: 10px;
+    height: 70px;           /* Adjust height as needed */
+}
+
+#header_text {
+    font-family: 'Poppins';
+    font-weight: 800;
+    font-size: 30px;
+    color: #00000071;
+}
+
+
+/* Footer */
 
 .red-text{
     color: red;
@@ -39,7 +140,7 @@
 
 #upper_row{
     min-height: 5vh;
-    background-color: #FFFFFF;
+    background-color: #a28282;
     border-style: solid;
     border-color: #7C7C7C;
     border-width: 0px 0px 0.1px 0px;
@@ -50,6 +151,8 @@
     min-height: 95vh;
 }
 
+/* Navbar */
+
 .nav-bar-col{
     border-style: solid;
     border-color: #7C7C7C;
@@ -58,9 +161,13 @@
 }
 
 #navbar{
+    transition: transform 0.3s ease;
     position: sticky;
     border-style: solid;
     border: 50px;
+    background-color: rgba(0, 106, 255, 0);
+    width: 100%;
+    height: 100%;
 }
 
 p{
@@ -81,19 +188,20 @@ p{
 
 .navigation_list li{
     line-height: 38px;
-    padding: 3% 10% 3% 10%;
+    padding: 3% 10% 5% 10%;
     margin-top: 1.5em;
-    margin-bottom: 1.5em;
+    margin-bottom: 4em;
 }
 
 .navigation_list li:hover{
     color: #FFFFFF !important;
-    background: rgba(25, 0, 213, 0.48);
+    background: rgba(0, 206, 213, 0.48);
     border-radius: 4px;
 }
 
 .navigation_list li a{
-    color: #7C7C7C;
+    color: #626262a8;
+    font-size: 15px;
 }
 
 .navigation_list li:hover a{
@@ -108,4 +216,8 @@ h1{
 h7{
     font-family: 'Poppins';
     font-weight: 800;
+}
+
+#toggle-button {
+    margin-left: auto; /* Push the button to the right */
 }

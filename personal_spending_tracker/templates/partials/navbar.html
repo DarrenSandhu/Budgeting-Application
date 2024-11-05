@@ -1,17 +1,128 @@
-<div id="navbar" class="container position-sticky top-0"> 
+<div id="navbar" class="navbar-container container position-sticky top-0">
     <div class="row align-items-center">
         <div class="col">
             <ul class="navigation_list">
+                <div class="col-auto">
+                    <button id="toggleSidebarButton" class="btn btn-link p-0" onclick="toggleSidebar()" style="padding-left: 40px;">
+                        <i class="bi bi-list" style="font-size: 1.5rem; color: #000;"></i>
+                    </button>
+                </div>
                 <li><a href="{% url 'feed' %}">Home</a></li>
-                <li><a href="{% url 'spending_history' timefilter='All' categoryfilter='All' cyclefilter='Current' %}">Spending history</a></li>
-                <li><a href="{% url 'regular_spendings_chart' %}">Upcoming spendings</a></li>
-                <li><a href="{% url 'spending_by_category' %}">Spending by category</a></li>
-                <li><a href="{% url 'point_history' timefilter='All' categoryfilter='All' %}">Point awards and achievements</a></li>
-            </br>
-            </br>
-                <li><a href="{% url 'category_management_dashboard' %}">Manage spending categories</a></li>
+                <li><a href="{% url 'spending_history' timefilter='All' categoryfilter='All' cyclefilter='Current' %}">Spending History</a></li>
+                <li><a href="{% url 'regular_spendings_chart' %}">Upcoming Spendings</a></li>
+                <li><a href="{% url 'spending_by_category' %}">Spending by Category</a></li>
+                <li><a href="{% url 'point_history' timefilter='All' categoryfilter='All' %}">Point Awards & Achievements</a></li>
+                <li><a href="{% url 'category_management_dashboard' %}">Manage Spending Categories</a></li>
             </ul>
         </div>
     </div>
+    {% comment %} <!--Toggle Button-->
+    <div class="col-auto">
+        <button id="toggleSidebarButton" class="btn btn-link" onclick="toggleSidebar()">
+            <i class="bi bi-list" style="font-size: 1.5rem; color: #000;"></i>
+        </button>
+    </div> {% endcomment %}
 </div>
+{% comment %} <div class="wrapper">
+    <aside id="sidebar">
+        <div class="d-flex">
+            <button class="toggle-btn" type="button">
+                <i class="lni lni-grid-alt"></i>
+            </button>
+            <div class="sidebar-logo">
+                <a href="#">CodzSword</a>
+            </div>
+        </div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link">
+                    <i class="lni lni-user"></i>
+                    <span>Profile</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link">
+                    <i class="lni lni-agenda"></i>
+                    <span>Task</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                    data-bs-target="#auth" aria-expanded="false" aria-controls="auth">
+                    <i class="lni lni-protection"></i>
+                    <span>Auth</span>
+                </a>
+                <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">Login</a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">Register</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                    data-bs-target="#multi" aria-expanded="false" aria-controls="multi">
+                    <i class="lni lni-layout"></i>
+                    <span>Multi Level</span>
+                </a>
+                <ul id="multi" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse"
+                            data-bs-target="#multi-two" aria-expanded="false" aria-controls="multi-two">
+                            Two Links
+                        </a>
+                        <ul id="multi-two" class="sidebar-dropdown list-unstyled collapse">
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link">Link 1</a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link">Link 2</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link">
+                    <i class="lni lni-popup"></i>
+                    <span>Notification</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link">
+                    <i class="lni lni-cog"></i>
+                    <span>Setting</span>
+                </a>
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <a href="#" class="sidebar-link">
+                <i class="lni lni-exit"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"></script>
+<script src="script.js"></script> {% endcomment %}
+{% comment %} <button onclick="toggleNavbar()" id="toggle-button" class="btn btn-secondary">Toggle Menu</button>
+
+<script>
+    function toggleNavbar() {
+        const navbar = document.getElementById("navbar");
+        const button = document.getElementById("toggle-button");
+    
+        if (navbar.style.display === "none" || navbar.style.display === "") {
+            navbar.style.display = "block";
+            button.innerText = "Hide Menu";
+        } else {
+            navbar.style.display = "none";
+            button.innerText = "Show Menu";
+        }
+    }
+</script> {% endcomment %}
 

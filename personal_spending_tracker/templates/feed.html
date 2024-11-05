@@ -56,7 +56,7 @@
 
       // preparing labels
       for (let i = 0; i <money_left_now.length; i++){
-        money_left_now[i] = '£' + money_left_now[i] + ' left'
+        money_left_now[i] = '£' + money_left_now[i] + ' remaining';
       };
       const labels = money_left_now.map(function(e, i) {
         return [e, " " + labels_now[i]];
@@ -85,7 +85,7 @@
               backgroundColor: BACKGROUND_COLOURS,
               borderColor: BORDER_COLOURS,
               type: 'bar', 
-              barPercentage: 0.40, 
+              barPercentage: 0.4, 
               grouped: false,
               order: 1,
             },
@@ -108,15 +108,16 @@
           },
           scales: {
             y: {
-              max: budgetData_now[0],
+              min: 0,
+              max: 31,
               beginAtZero: true,
               title: {
                 display: true,
-                text: '# of days left in the cycle',
-                align: 'end',
+                text: '# Of days left in the cycle',
+                align: 'middle',
               },
               ticks:  {
-                stepSize: 5,
+                stepSize: 1,
                 color: 'grey',
                 callback: function(value, index, values) {
                   return value === budgetData_now[0] - today_n ? 'today' : value.toString();
@@ -128,9 +129,14 @@
               },
             },
             x: {
+              title: {
+                display: true,
+                text: 'Categories',
+                align: 'middle',
+              },
               ticks: {
                 color: BORDER_COLOURS,
-              }
+              },
             }
           },
         }
@@ -146,7 +152,7 @@
 {% endblock %}
 
 {% block header %}
-  <h1>Personal Spending Tracker</h1>
+  <h1 id="header_text">Personal Spending Tracker</h1>
 {% endblock %}
 
 {% block content %}
@@ -162,7 +168,7 @@
  {% endfor %}
 {% endif %} -->
 
-  <h4 style="margin-left: 25%; margin-right:25%;"> Your {{month_2}} funds left per budget category </h4>
+  <h4 style="margin-left: 25%; margin-right:25%;"> Your {{month_2}} Funds Left Per Category </h4>
 </br>
   <canvas id="chart_now"></canvas>
 </br>

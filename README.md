@@ -14,7 +14,7 @@
 Personal Spending Tracker is a user friendly website that encourages even those who don't like budgeting! 
 
 ## Deployed version of the application
-The deployed version of the application can be found at *<[enter URL here](URL)>*.
+The deployed version of the application can be found at **.
 
 ## Installation Instructions 
 ```

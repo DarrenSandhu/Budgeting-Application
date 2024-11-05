@@ -1,6 +1,8 @@
 {% extends 'partials/main_layout_template.html' %}
+{% block header %}
+  <h1 id="header_text">Your Upcoming Spendings</h1>
+{% endblock %}
 {% block content %}
-  <h1>Your Upcoming Spendings</h1>
   <div>
     {% if no_regular_spendings %}
       <p>No regular spendings found.</p>

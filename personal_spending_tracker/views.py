@@ -62,10 +62,12 @@ def feed(request):
 
 
     today = json.dumps(date.today().day)
+    month_2 = date.today().strftime('%B')  # Get the full month name
 
     context = {
         'timeframe_string_now' : timeframe_string_now, 
         'today' : today,
+        'month_2' : month_2,
     }
     context.update(fetch_context_cycle_budget_current_state_chart_o_category(current_active_cycle))
 

@@ -10,29 +10,38 @@ from personal_spending_tracker.helper_functions.points_processing import *
 from personal_spending_tracker.models import *
 from datetime import date, timedelta
 from django.utils import timezone
+from django.db.utils import IntegrityError
+
     
 def seed_users(num_users=5):
-    """Create `num_users` number of random users."""
+    """Create `num_users` random users without duplicate emails or usernames."""
     for i in range(num_users):
         username = f'user{i}'
         email = f'{username}@example.com'
         first_name = f'First{i}'
         last_name = f'Last{i}'
         cycle_length = random.choice([option[0] for option in CYCLE_LENGTH_OPTIONS])
-        # Generate a random date of birth more than 16 years ago
-        date_of_birth = date.today() - timedelta(days=random.randint(16*365, 50*365))
-        bio = ' '.join(['Lorem', 'ipsum', 'dolor', 'sit', 'amet,', 'consectetur', 'adipiscing', 'elit.', 'Fusce', 'non', 'neque', 'vel', 'ligula', 'porttitor', 'interdum', 'ac', 'et', 'quam.', 'Donec', 'sodales', 'quam', 'in', 'ante', 'dignissim', 'tempus.'])
-        user = User.objects.create(
-            username=username,
-            email=email,
-            first_name=first_name,
-            last_name=last_name,
-            date_of_birth=date_of_birth,
-            bio=bio,
-            cycle_length=cycle_length
-        )
-        user.set_password('Password123')
-        user.save()
+        date_of_birth = date.today() - timedelta(days=random.randint(16 * 365, 50 * 365))
+        bio = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce non neque vel ligula porttitor.'
+
+        # Check for unique username/email, and attempt to create user
+        if not User.objects.filter(email=email).exists():
+            try:
+                user = User.objects.create(
+                    username=username,
+                    email=email,
+                    first_name=first_name,
+                    last_name=last_name,
+                    date_of_birth=date_of_birth,
+                    bio=bio,
+                    cycle_length=cycle_length
+                )
+                user.set_password('Password123')
+                user.save()
+            except IntegrityError:
+                print(f"Skipping duplicate user with email: {email}")
+        else:
+            print(f"User with email {email} already exists. Skipping.")
 
 def seed_cycles():
     users = User.objects.all()

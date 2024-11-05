@@ -1,33 +1,50 @@
 {% extends 'partials/base.html' %}
+
 {% block optionalscript %}
+<script>
+    function toggleSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        const contentContainer = document.getElementById('contentContainer');
+        
+        // Toggle the sidebar's visibility
+        if (sidebar.classList.contains('collapsed')) {
+            sidebar.classList.remove('collapsed');
+            contentContainer.classList.remove('shifted');
+        } else {
+            sidebar.classList.add('collapsed');
+            contentContainer.classList.add('shifted');
+        }
+    }
+</script>
 {% endblock %}
 
 {% block body %}
-<div id="main_container" class="container"> 
-    <div style="z-index: 1000;" class="row justify-content-center position-sticky top-0">
-        <div class="col-2 nav-bar-col"></div>
-        <div id="upper_row" class="col-10">
-        </br>
-            {% block top_bar%}{% include 'partials/topbar.html' %}{% endblock %}
-        </div>
-    </div>
-    <div style="z-index: -1;" id="main_row" class="row justify-content-center">
-        
-        <div class="col-2 nav-bar-col">
-            {% block nav_bar%}{% include 'partials/navbar.html' %}{% endblock %}
-        </div>
-        
-        <div class="col-10">
-        </br>
-            <!-- CONTENT SECTION -->
-                <!-- title of the page -->
-                    {% block header %}
-                    {% endblock %}
-            </br>
+<div id="main_container" class="container-fluid">
 
-                <!-- the rest of the content -->
-                {% block content %}
+    <div class="row">
+        <!-- Left Sidebar Navigation -->
+        <div id="sidebar" class="col-md-2 col-sm-3 d-none d-sm-block position-fixed" style="height: 100vh; padding-top: 3.5rem;">
+            {% block nav_bar %}
+                {% include 'partials/navbar.html' %}
+            {% endblock %}
+        </div>
+        
+        <!-- Main Content Area with ID for toggle targeting -->
+        <div id="contentContainer" class="col-md-10 offset-md-2 col-sm-9 offset-sm-3">
+            <!-- Sticky Top Bar -->
+            <div class="position-sticky top-0 bg-white shadow-sm" style="z-index: 100000;">
+                {% block top_bar %}
+                    {% include 'partials/topbar.html' %}
                 {% endblock %}
+            </div>
+
+            <!-- Content Area -->
+            <div id="header" class="py-3">
+                {% block header %}{% endblock %}
+            </div>
+            <div id="content">
+                {% block content %}{% endblock %}
+            </div>
         </div>
     </div>
 </div>
