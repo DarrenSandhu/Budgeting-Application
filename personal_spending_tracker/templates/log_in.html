@@ -2,10 +2,12 @@
 
 {% block nav_bar%}{% endblock %}
 {% block top_bar%}{% endblock %}
+{% block header %}
+<h1 id="header_text">Log In</h1>
+{% endblock %}
 
 {% block content %}
 <div class="form-group"> 
-<h1>Log in</h1>
   <p> &nbsp; </p>
   {% for messages in messages %}
     <p><b>{{ messages }}</b></p>
