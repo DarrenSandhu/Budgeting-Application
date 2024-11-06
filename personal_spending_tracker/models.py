@@ -63,7 +63,7 @@ def get_concrete_category_id():
     return concrete_category.id
 
 class User(AbstractUser):
-    username = models.CharField(max_length=20, unique=True, null=False, blank=False,
+    username = models.CharField(max_length=25, unique=True, null=False, blank=False,
         validators=[RegexValidator(
             regex=r'^.{5,}$',
             message='Username must contain at least 5 characters'
@@ -76,7 +76,7 @@ class User(AbstractUser):
     )
     first_name = models.CharField(max_length=50, blank=False)
     last_name = models.CharField(max_length=50, blank=False)
-    bio = models.TextField(max_length=200, blank=True)
+    bio = models.TextField(max_length=255, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     cycle_length = models.CharField(choices=CYCLE_LENGTH_OPTIONS, max_length=50, null=False, blank=False, default='MONTHLY')
     #objects = PersonalSpendingTrackerUserManager()
