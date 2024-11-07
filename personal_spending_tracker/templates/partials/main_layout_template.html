@@ -20,14 +20,14 @@
 <div id="main_container" class="container-fluid">
     <div class="row">
         <!-- Left Sidebar Navigation -->
-        <div id="sidebar" class="col-md-2 col-sm-3 position-fixed" style="height: 100vh; padding-top: 3.5rem;">
+        <div id="sidebar" class="col-md-2 col-3 position-fixed" style="height: 100vh; padding-top: 3.5rem;">
             {% block nav_bar %}
                 {% include 'partials/navbar.html' %}
             {% endblock %}
         </div>
 
         <!-- Main Content Area -->
-        <div id="contentContainer" class="col-md-10 offset-md-2 col-sm-9 offset-sm-3">
+        <div id="contentContainer" class="col-md-10 offset-md-2 col-9 offset-3">
             <div id="topbarContainer">
                 {% block top_bar %}
                     {% include 'partials/topbar.html' %}
