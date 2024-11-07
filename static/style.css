@@ -19,6 +19,7 @@
 #main_container {
     transition: margin-left 0.5s ease; /* Smooth transition */
     width: 100%; /* Adjust width to fill the space */
+    overflow-x: auto; /* Prevent horizontal scrolling */
 }
 
 #main_container.expanded {
@@ -114,8 +115,53 @@ body, html {
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
+    #main_container {
+        width: auto; /* Adjust width to fill the space */
+        height: 100%;
+    }
+
     #main_container.expanded {
         margin-left: 25px; /* Remove left margin to fill the space */
         width: 125%; /* Adjust width to fill the space */
     }
+
+    #contentContainer {
+        min-height: 100vh; /* Adjust height to fill the space */
+        transition: margin-left 0.5s ease; /* Smooth transition */
+        overflow: auto;
+    }
+
+    #contentContainer.shifted {
+        margin-left: 5px; /* Adjust the margin when sidebar is collapsed */
+        transition: margin-left 0.5s ease; /* Smooth transition */
+        overflow: auto;
+    }
+
+}
+
+/* Mobile Responsive */
+@media (max-width: 400px) {
+    #main_container {
+        width: 100%; /* Adjust width to fill the space */
+        height: 100%;
+        overflow: visible;
+    }
+
+    #main_container.expanded {
+        margin-left: 25px; /* Remove left margin to fill the space */
+        width: 125%; /* Adjust width to fill the space */
+    }
+
+    #contentContainer {
+        min-height: 100vh; /* Adjust height to fill the space */
+        transition: margin-left 0.5s ease; /* Smooth transition */
+        overflow: auto;
+    }
+
+    #contentContainer.shifted {
+        margin-left: 5px; /* Adjust the margin when sidebar is collapsed */
+        transition: margin-left 0.5s ease; /* Smooth transition */
+        overflow: auto;
+    }
+
 }

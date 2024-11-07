@@ -33,23 +33,12 @@
 /* Mobile view */
 @media (max-width: 768px) {
     #topbarContainer {
-        width: auto;
-    }
-
-    #topbar {
-        position: fixed;
-        top: 0;
-        width: 100%; /* Ensure the topbar takes up the full width */
-        left: 0;
-        z-index: 10000;
-        padding: 10px; /* Optional: add padding for some space */
-        display: flex; /* Use flexbox for layout */
-        justify-content: space-between; /* Ensure contents are spaced out */
-        align-items: center; /* Vertically align the content */
-        overflow: visible; /* Ensure contents don't get clipped */
+        position: sticky;
+        width: 105%;
     }
 
     #topbarContainer.expanded {
-        width: 93%;
+        position: sticky;
+        width: 105%;
     }
 }
