@@ -4,12 +4,13 @@
     transition: margin-left 0.5s ease; /* Smooth transition */
     z-index: 10000; 
     top: 0; 
-    width: 1425px;
+    padding-right: 15px;
+    width: calc(100% - 16.67%); /* Adjust width to fill the space */
 }
 
 #topbarContainer.expanded {
+    width: 96.5%; /* Adjust width to fill the space */
     transition: margin-left 0.5s ease; /* Smooth transition */
-    width: 1650px;
 }
 
 /* Topbar styling */

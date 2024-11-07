@@ -1,6 +1,6 @@
-{% extends 'partials/main_layout_template.html' %}
+{% comment %} {% extends 'partials/main_layout_template.html' %}
 {% block header %}
-<h1 id ="header_text">Add Spending</h1>
+<h1 id="header_text">Add Category</h1>
 {% endblock %}
 
 {% block content %}
@@ -10,16 +10,6 @@
     {{ form.non_field_errors }}
 
     {% for field in form %}
-    {% if field.name == 'is_regular' %}
-          <label for="{{ form.field.id_for_label }}">{{field.label_tag}}</label>
-          {{ field }}
-          {% for error in field.errors %}
-            <div class="invalid-feedback">
-              {{ error }}
-            </div>
-          {% endfor %}
-        </div>
-      {% endif %}
       {% if field.name != 'frequency' and field.name != 'next_due_date' and field.name != 'is_regular' %}
         <div class="mb-3">
           {{ field.label_tag }}
@@ -34,19 +24,19 @@
     {% endfor %}
 
 
-    <div id="hidden_fields" style="display: none">
+    {% comment %} <div id="hidden_fields" style="display: none">
       {{ form.frequency.label_tag }}
       {{ form.frequency }}
       {{ form.next_due_date.label_tag }}
       {{ form.next_due_date }}
-    </div>
+    </div> {% endcomment %}
 
-    <br><button type="submit" class="btn btn-primary">Add Spending</button>
+    <br><button type="submit" class="btn btn-primary">Add Category</button>
   </form>
 </br>
 </br>
 
-  <script>
+  {% comment %} <script>
     document.addEventListener('DOMContentLoaded', function() {
       const frequencyReccuringCheckbox = document.getElementById('id_is_regular');
       const hiddenFields = document.getElementById('hidden_fields');
@@ -65,7 +55,7 @@
         }
       });
     });
-  </script>
+  </script> {% endcomment %}
 
 </div>
-{% endblock %}
+{% endblock %} {% endcomment %}

@@ -52,6 +52,8 @@ urlpatterns = [
 
     path('regular-spendings-chart/', views.regular_spendings_chart, name='regular_spendings_chart'),
 
+    # path('add_category/', views.add_spending_category, name='add_category'),
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

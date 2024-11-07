@@ -755,3 +755,18 @@ def accounts_session_2(request):
             else: accounts_session_formset = AccountsSessionFormSet(initial=most_recent_cycle_categories.values(), form_kwargs={'user': request.user})
 
     return render(request, template, {'formset': accounts_session_formset, 'form2' : add_new_MCC_form})
+
+
+
+# @ViewFilter.prohibit_anonymous
+# def add_spending_category(request):
+#     if request.method == 'POST':
+#         form = AddConcreteCategory(request.POST)
+#         if form.is_valid():
+#             instance = form.save(commit=False)
+#             instance.user = request.user
+#             instance.save()
+#             return redirect('category_management_dashboard')
+#     else:
+#         form = AddConcreteCategory()
+#     return render(request, 'add_spending_category.html', {'form': form, 'request' : request})
