@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-n)hfy#u#v*stgq15dz73*4e5pa$2$)^xvx(=q!%i_jolr5c3!='
+SECRET_KEY = "django-insecure-n)hfy#u#v*stgq15dz73*4e5pa$2$)^xvx(=q!%i_jolr5c3!="
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False") == "true"
@@ -126,20 +126,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, "static/"),
-# )
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Create a directory for collected static files
-
 STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static/"),
+)
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# This production code might break development mode, so we check whether we're in DEBUG mode
-if not DEBUG:
-    # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
-    # and renames the files with unique names for each version to support long-term caching
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
 
 
 
