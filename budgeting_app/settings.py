@@ -11,18 +11,24 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
+from storages.backends.s3boto3 import S3Boto3Storage
 import os
 import dj_database_url
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables from .env file
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-n)hfy#u#v*stgq15dz73*4e5pa$2$)^xvx(=q!%i_jolr5c3!="
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False") == "true"
@@ -43,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'personal_spending_tracker',
     'django_bootstrap5',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -87,7 +94,6 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
 database_url = os.environ.get("DATABASE_URL")
 DATABASES['default'] = dj_database_url.parse(database_url)
 
@@ -125,13 +131,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static/"),
-)
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
+# STATIC_URL = '/static/'
+# STATIC_ROOT = BASE_DIR / "staticfiles"
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, "static/"),
+# )
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 
@@ -153,9 +158,9 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'no-reply-spending-tracker@outlook.com'
 EMAIL_HOST_PASSWORD = 'wanxop-fyxsu8-xukHun'
 
-# Media files
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# # Media files
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # File upload handler
 FILE_UPLOAD_HANDLERS = [
@@ -171,3 +176,104 @@ CACHES = {
         }
     }
 }
+
+# STATICFILES_DIRS = [
+#     BASE_DIR / 'static',  # Ensure this directory exists and contains your custom static files
+#     # Add other directories here if needed
+#     BASE_DIR / 'media',
+# ]
+
+# Amazon S3 settings
+# AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+# AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+# AWS_STORAGE_BUCKET_NAME = 'budgeting-app-media'
+# AWS_S3_REGION_NAME = 'eu-north-1'  # e.g., 'us-west-2'
+# AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+# AWS_DEFAULT_ACL = 'public-read'
+# AWS_QUERYSTRING_AUTH = False  # Disable query string authentication
+# AWS_S3_OBJECT_PARAMETERS = {
+#     'CacheControl': 'max-age=86400',
+# }
+# AWS_HEADERS = {
+#     'Access-Control-Allow-Origin': '*',
+# }
+
+# Tell Django to use the S3 storage backend for media files
+# STORAGES = {
+#     'default': {
+#         'BACKEND': 'storages.backends.s3.S3Storage',
+#         'OPTIONS': {
+#             'bucket_name': AWS_STORAGE_BUCKET_NAME,
+#             'region_name': AWS_S3_REGION_NAME,
+#             'custom_domain': AWS_S3_CUSTOM_DOMAIN,
+#             'access_key_id': AWS_ACCESS_KEY_ID,
+#             'secret_access_key': AWS_SECRET_ACCESS_KEY,
+#         }
+#     },
+#     'static': {
+#         'BACKEND': 'storages.backends.s3.S3Storage',
+#         'OPTIONS': {
+#             'bucket_name': AWS_STORAGE_BUCKET_NAME,
+#             'region_name': AWS_S3_REGION_NAME,
+#             'custom_domain': AWS_S3_CUSTOM_DOMAIN,
+#             'access_key_id': AWS_ACCESS_KEY_ID,
+#             'secret_access_key': AWS_SECRET_ACCESS_KEY,
+#         }
+#     }
+# }
+
+# # Media files configuration
+# MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+# STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# # Set the static and media files locations
+# STATICFILES_LOCATION = 'static'
+# MEDIAFILES_LOCATION = 'media'
+
+# # Define custom storage classes for static and media files
+# class StaticStorage(S3Boto3Storage):
+#     location = STATICFILES_LOCATION
+
+# class MediaStorage(S3Boto3Storage):
+#     location = MEDIAFILES_LOCATION
+#     file_overwrite = False
+
+# # Configure static and media files storage
+# STATICFILES_STORAGE = 'budgeting_app.settings.StaticStorage'
+# DEFAULT_FILE_STORAGE = 'budgeting_app.settings.MediaStorage'
+
+# # Set static and media URLs
+# STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/{STATICFILES_LOCATION}/'
+# MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/{MEDIAFILES_LOCATION}/'
+
+
+
+USE_S3 = os.getenv('USE_S3') == 'True'
+
+if USE_S3:
+    # aws settings
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+    AWS_DEFAULT_ACL = None
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    # s3 static settings
+    STATIC_LOCATION = 'static'
+    STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
+    STATICFILES_STORAGE = 'budgeting_app.storage_backends.StaticStorage'
+    # s3 public media settings
+    PUBLIC_MEDIA_LOCATION = 'media'
+    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
+    DEFAULT_FILE_STORAGE = 'budgeting_app.storage_backends.PublicMediaStorage'
+else:
+    STATIC_URL = '/staticfiles/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+

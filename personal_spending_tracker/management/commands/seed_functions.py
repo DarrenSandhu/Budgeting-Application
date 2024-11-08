@@ -4,14 +4,13 @@ import shutil
 from faker import Faker
 import random
 from random import randint, choice
-from budgeting_app.settings import MEDIA_ROOT
 from personal_spending_tracker.helper_functions.views_time_frames import *
 from personal_spending_tracker.helper_functions.points_processing import *
 from personal_spending_tracker.models import *
 from datetime import date, timedelta
 from django.utils import timezone
 from django.db.utils import IntegrityError
-
+from budgeting_app.settings import MEDIA_ROOT
     
 def seed_users(num_users=5):
     """Create `num_users` random users without duplicate emails or usernames."""

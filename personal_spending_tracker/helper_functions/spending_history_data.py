@@ -9,7 +9,7 @@ from .cycle_dates_computation import *
 from .spending_retrieval import *
 from .CC_MCC_objects_retrieval import *
 from personal_spending_tracker.forms import EditSpendingForm
-from budgeting_app.settings import MEDIA_ROOT, MEDIA_URL
+from budgeting_app.settings import MEDIA_URL
 
 def fetch_context_for_spending_history_data(request, timefilter = "All", categoryfilter = "All", cyclefilter = "Current"):
     current_user = request.user
