@@ -1,0 +1,44 @@
+/* Topbar Container styling */
+#topbarContainer {
+    position: fixed;
+    transition: margin-left 0.5s ease; /* Smooth transition */
+    z-index: 10000; 
+    top: 0; 
+    padding-right: 15px;
+    width: calc(100% - 16.67%); /* Adjust width to fill the space */
+}
+
+#topbarContainer.expanded {
+    width: 96.5%; /* Adjust width to fill the space */
+    transition: margin-left 0.5s ease; /* Smooth transition */
+}
+
+/* Topbar styling */
+
+#topbar {
+    background-color: #00c3ff5a;
+    position: fixed;
+    top: 0;
+    color: #0080ff;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    min-width: 100%;
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+    #topbarContainer {
+        position: sticky;
+        width: 105%;
+    }
+
+    #topbarContainer.expanded {
+        position: sticky;
+        width: 105%;
+    }
+}
