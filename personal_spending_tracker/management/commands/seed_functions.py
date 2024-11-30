@@ -130,6 +130,8 @@ def seed_spendings_in_the_monthly_cycle(num_spending_per_cycle = 3):
 
                     # Copy the file to the Django media directory
                     shutil.copy(photo_path, os.path.join(MEDIA_ROOT, photo_filename))
+
+                    # 
                     
                     #Initialise is_regular fields and date field for use
                     CHOICES = [('monthly', 'Monthly'), ('yearly', 'Yearly')]
