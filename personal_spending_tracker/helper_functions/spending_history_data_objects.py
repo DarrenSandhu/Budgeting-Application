@@ -1,6 +1,5 @@
 from ..models import ConcreteCategory, Spending
 from .filter_all_spending_objects import *
-import numpy as np
 import math
 import json
 from .json_processing import *
