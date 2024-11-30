@@ -12,7 +12,7 @@ from django.utils import timezone
 from django.db.utils import IntegrityError
 from budgeting_app.settings import MEDIA_ROOT
     
-def seed_users(num_users=5):
+def seed_users(num_users=200):
     """Create `num_users` random users without duplicate emails or usernames."""
     for i in range(num_users):
         username = f'user{i}'

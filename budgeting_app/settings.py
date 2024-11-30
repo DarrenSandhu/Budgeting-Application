@@ -94,8 +94,8 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-database_url = os.environ.get("DATABASE_URL")
-DATABASES['default'] = dj_database_url.parse(database_url)
+# database_url = os.environ.get("DATABASE_URL")
+# DATABASES['default'] = dj_database_url.parse(database_url)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -177,76 +177,6 @@ CACHES = {
     }
 }
 
-# STATICFILES_DIRS = [
-#     BASE_DIR / 'static',  # Ensure this directory exists and contains your custom static files
-#     # Add other directories here if needed
-#     BASE_DIR / 'media',
-# ]
-
-# Amazon S3 settings
-# AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
-# AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
-# AWS_STORAGE_BUCKET_NAME = 'budgeting-app-media'
-# AWS_S3_REGION_NAME = 'eu-north-1'  # e.g., 'us-west-2'
-# AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-# AWS_DEFAULT_ACL = 'public-read'
-# AWS_QUERYSTRING_AUTH = False  # Disable query string authentication
-# AWS_S3_OBJECT_PARAMETERS = {
-#     'CacheControl': 'max-age=86400',
-# }
-# AWS_HEADERS = {
-#     'Access-Control-Allow-Origin': '*',
-# }
-
-# Tell Django to use the S3 storage backend for media files
-# STORAGES = {
-#     'default': {
-#         'BACKEND': 'storages.backends.s3.S3Storage',
-#         'OPTIONS': {
-#             'bucket_name': AWS_STORAGE_BUCKET_NAME,
-#             'region_name': AWS_S3_REGION_NAME,
-#             'custom_domain': AWS_S3_CUSTOM_DOMAIN,
-#             'access_key_id': AWS_ACCESS_KEY_ID,
-#             'secret_access_key': AWS_SECRET_ACCESS_KEY,
-#         }
-#     },
-#     'static': {
-#         'BACKEND': 'storages.backends.s3.S3Storage',
-#         'OPTIONS': {
-#             'bucket_name': AWS_STORAGE_BUCKET_NAME,
-#             'region_name': AWS_S3_REGION_NAME,
-#             'custom_domain': AWS_S3_CUSTOM_DOMAIN,
-#             'access_key_id': AWS_ACCESS_KEY_ID,
-#             'secret_access_key': AWS_SECRET_ACCESS_KEY,
-#         }
-#     }
-# }
-
-# # Media files configuration
-# MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
-# STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-# # Set the static and media files locations
-# STATICFILES_LOCATION = 'static'
-# MEDIAFILES_LOCATION = 'media'
-
-# # Define custom storage classes for static and media files
-# class StaticStorage(S3Boto3Storage):
-#     location = STATICFILES_LOCATION
-
-# class MediaStorage(S3Boto3Storage):
-#     location = MEDIAFILES_LOCATION
-#     file_overwrite = False
-
-# # Configure static and media files storage
-# STATICFILES_STORAGE = 'budgeting_app.settings.StaticStorage'
-# DEFAULT_FILE_STORAGE = 'budgeting_app.settings.MediaStorage'
-
-# # Set static and media URLs
-# STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/{STATICFILES_LOCATION}/'
-# MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/{MEDIAFILES_LOCATION}/'
 
 
 
@@ -269,11 +199,9 @@ if USE_S3:
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
     DEFAULT_FILE_STORAGE = 'budgeting_app.storage_backends.PublicMediaStorage'
 else:
-    STATIC_URL = '/staticfiles/'
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATIC_URL = '/static/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 

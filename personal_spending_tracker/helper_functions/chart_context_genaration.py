@@ -1,6 +1,5 @@
 from ..models import ConcreteCategory, Spending
 from .filter_all_spending import *
-import numpy as np
 import math
 import json
 from .json_processing import *
@@ -91,19 +90,22 @@ def fetch_context_for_distribution_chart(request, category, cycle):
     # max number of spendings within a day
     max_num_spendings = max(len(spending["spendings"]) for spending in graph_data.values())
     # Initialize a NumPy array to hold the data
-    data = np.zeros((len(graph_data), max_num_spendings))
+    # data = np.zeros((len(graph_data), max_num_spendings))  # NumPy array (to be replaced)
+    data = [[0] * max_num_spendings for _ in range(len(graph_data))]  # List of lists replacement
+
     # Fill the data array with spendings values
     for i, day in enumerate(graph_data.keys()):
         for j, spending in enumerate(graph_data[day]["spendings"]):
-            data[i, j] = spending.amount
+            data[i][j] = spending.amount
     
     # Convert the data to a list of dictionaries, one per the serial number of the day's spending 
     datasets = []
     for i in range(max_num_spendings):
         datasets.append({
             "label": f"Spending category {i}",
-            "data": data[:, i].tolist()
+            "data": [day[i] for day in data]
         })
+
     cycle_distribution_of_spending_json_format_string = json.dumps(datasets, cls=DecimalEncoder, ensure_ascii=False)
 
     # average recommended thershold
