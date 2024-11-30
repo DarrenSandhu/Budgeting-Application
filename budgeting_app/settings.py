@@ -34,6 +34,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = os.environ.get("DEBUG", "False") == "true"
 # DEBUG = True
 
+
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
 # ALLOWED_HOSTS = []
 
@@ -162,6 +163,7 @@ EMAIL_HOST_PASSWORD = 'wanxop-fyxsu8-xukHun'
 # MEDIA_URL = '/media/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
 # File upload handler
 FILE_UPLOAD_HANDLERS = [
     'django.core.files.uploadhandler.TemporaryFileUploadHandler']
@@ -197,11 +199,14 @@ if USE_S3:
     # s3 public media settings
     PUBLIC_MEDIA_LOCATION = 'media'
     MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
     DEFAULT_FILE_STORAGE = 'budgeting_app.storage_backends.PublicMediaStorage'
 else:
+    DEBUG = True
     STATIC_URL = '/static/'
     STATIC_ROOT = os.path.join(BASE_DIR, 'static')
     MEDIA_URL = '/media/'
     MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
